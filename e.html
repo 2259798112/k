@@ -392,18 +392,19 @@
                 volumesCqSell = [];
 
                 list.forEach(k => {
-                    dates.push(k.dateString);
+                    const {dateString, fOpen, fClose, fLow, fHigh, buy, sell, cqBuy, cqSell} = k;
+                    dates.push(dateString);
                     let kLine = [];
-                    kLine.push(k.fOpen);
-                    kLine.push(k.fClose);
-                    kLine.push(k.fLow);
-                    kLine.push(k.fHigh);
+                    kLine.push(fOpen);
+                    kLine.push(fClose);
+                    kLine.push(fLow);
+                    kLine.push(fHigh);
                     dataK.push(kLine);
 
-                    volumesBuy.push(k.buy);
-                    volumesSell.push(k.sell);
-                    volumesCqBuy.push(k.cqBuy);
-                    volumesCqSell.push(k.cqSell);
+                    volumesBuy.push(buy);
+                    volumesSell.push(sell);
+                    volumesCqBuy.push(cqBuy);
+                    volumesCqSell.push(cqSell);
                 });
 
                 dates.push(new Date().Format("yyyy-MM-dd hh:mm"));
@@ -417,7 +418,6 @@
             } else {
 
 
-
                 dates.push(new Date().Format("yyyy-MM-dd hh:mm"));
                 dataK.push([]);
                 volumesBuy.push(0);
@@ -428,20 +428,19 @@
                 //更新 倒数第二根k
 
                 const index = dates.length - 2;
-                const k = list[list.length - 1];
+                const {dateString, fOpen, fClose, fLow, fHigh, buy, sell, cqBuy, cqSell} = list[list.length - 1];
 
-                dates[index] = (k.dateString);
+                dates[index] = (dateString);
                 let kLine = [];
-                kLine.push(k.fOpen);
-                kLine.push(k.fClose);
-                kLine.push(k.fLow);
-                kLine.push(k.fHigh);
+                kLine.push(fOpen);
+                kLine.push(fClose);
+                kLine.push(fLow);
+                kLine.push(fHigh);
                 dataK[index] = (kLine);
-
-                volumesBuy[index] = (k.buy);
-                volumesSell[index] = (k.sell);
-                volumesCqBuy[index] = (k.cqBuy);
-                volumesCqSell[index] = (k.cqSell);
+                volumesBuy[index] = (buy);
+                volumesSell[index] = (sell);
+                volumesCqBuy[index] = (cqBuy);
+                volumesCqSell[index] = (cqSell);
             }
 
         }
