@@ -6,6 +6,7 @@
 
     <title>ECharts</title>
     <!-- 引入 echarts.js -->
+    <script src="js/common.js"></script>
     <script src="js/echarts.min.js"></script>
     <script src="js/reconnecting-websocket.min.js"></script>
     <!--    bulma-->
@@ -26,6 +27,85 @@
     <div id="notification"></div>
     <div class="container" id="content">
 
+        <div id="modal" class="modal is-active">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <div class="box">
+                    <article class="media">
+                        <div class="media-content">
+                            <div class="control">
+                                周期选择：
+                                <label class="radio">
+                                    <input type="radio" name="period" value="1min">
+                                    1min
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="period" value="5min" checked>
+                                    5min
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="period" value="30min">
+                                    30min
+                                </label>
+                            </div>
+
+                            <div class="control">
+                                K线数量：
+                                <label class="radio">
+                                    <input type="radio" name="kSize" value="20">
+                                    20
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="kSize" value="50" checked>
+                                    50
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="kSize" value="100">
+                                    100
+                                </label>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <button class="modal-close is-large" aria-label="close" onclick="setPeriod()"></button>
+        </div>
+
+        <div class="columns">
+            <div class="column">
+                <div class="field">
+                    <label class="label">周期</label>
+                    <div class="control">
+                        <span id="iPeriod"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+
+                <div class="field">
+                    <label class="label">时间</label>
+                    <div class="control">
+                        <span id="iTime"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="field">
+                    <label class="label">倒计时</label>
+                    <div class="control">
+                        <span id="iTimeRest"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="field">
+                    <label class="label">虚拟量</label>
+                    <div class="control">
+                        <span id="iVol"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="main" style="height:1000px;"></div>
@@ -319,7 +399,7 @@
             }, {
                 type: 'candlestick',
                 name: '日K',
-                data: data,
+                data: dataK,
                 itemStyle: {
                     color: '#ef232a',
                     color0: '#14b143',
@@ -370,20 +450,30 @@
 
     const updateList = (obj) => {
         if (DATA_TYPE.now === obj.dataType) {
-            let index = data.length - 1;
-
-            volumesBuy[index] = (obj.buy);
-            volumesSell[index] = (obj.sell);
-            volumesCqBuy[index] = (obj.cqBuy);
-            volumesCqSell[index] = (obj.cqSell);
-
+            let index = dates.length - 1;
+            const {dateString, fOpen, fClose, fLow, fHigh, buy, sell, cqBuy, cqSell} = obj;
+            if (index >= 0 && dates[index] === dateString) {
+                let kLine = [];
+                kLine.push(fOpen);
+                kLine.push(fClose);
+                kLine.push(fLow);
+                kLine.push(fHigh);
+                dataK[index] = kLine;
+                volumesBuy[index] = (buy);
+                volumesSell[index] = (sell);
+                volumesCqBuy[index] = (cqBuy);
+                volumesCqSell[index] = (cqSell);
+            }
         }
 
         if (DATA_TYPE.hk === obj.dataType) {
             //先判断  当前有几个k
             const {list} = obj;
-            if (dates.length < list.length) {
-                //全部替换
+            let len = list.length;
+            if (dates.length < len) {
+                //初始化
+
+                //1 清空
                 dates = [];
                 dataK = [];
                 volumesBuy = [];
@@ -391,6 +481,7 @@
                 volumesCqBuy = [];
                 volumesCqSell = [];
 
+                //2 赋值
                 list.forEach(k => {
                     const {dateString, fOpen, fClose, fLow, fHigh, buy, sell, cqBuy, cqSell} = k;
                     dates.push(dateString);
@@ -407,6 +498,7 @@
                     volumesCqSell.push(cqSell);
                 });
 
+                //3 最新状态
                 dates.push(new Date().Format("yyyy-MM-dd hh:mm"));
                 dataK.push([]);
                 volumesBuy.push(0);
@@ -418,6 +510,7 @@
             } else {
 
 
+                // 添加最新状态
                 dates.push(new Date().Format("yyyy-MM-dd hh:mm"));
                 dataK.push([]);
                 volumesBuy.push(0);
@@ -428,7 +521,7 @@
                 //更新 倒数第二根k
 
                 const index = dates.length - 2;
-                const {dateString, fOpen, fClose, fLow, fHigh, buy, sell, cqBuy, cqSell} = list[list.length - 1];
+                const {dateString, fOpen, fClose, fLow, fHigh, buy, sell, cqBuy, cqSell} = list[len - 1];
 
                 dates[index] = (dateString);
                 let kLine = [];
@@ -457,27 +550,30 @@
     };
 
 
-    const wsUrl = "ws://localhost:10001";//localhost 根据实际情况替换成 响应的ip 或者域名
-    let ws = new ReconnectingWebSocket(wsUrl);
+    const initWS = () => {
+        const wsUrl = "ws://localhost:10001";//localhost 根据实际情况替换成 响应的ip 或者域名
+        let ws = new ReconnectingWebSocket(wsUrl);
 
-    ws.onopen = function (evt) {
-        notify('连接成功')
+        ws.onopen = function (evt) {
+            notify('连接成功')
+        };
+
+        ws.onmessage = function (evt) {
+            try {
+                let msgObj = JSON.parse(evt.data);
+                console.log("msgObj", msgObj);
+                updateList(msgObj);
+
+            } catch (e) {
+                console.error("evt", evt);
+            }
+        };
+
+        ws.onclose = function (evt) {
+            notify('连接断开, 重新连接...')
+        };
     };
 
-    ws.onmessage = function (evt) {
-        try {
-            let msgObj = JSON.parse(evt.data);
-            console.log("msgObj", msgObj);
-            updateList(msgObj);
-
-        } catch (e) {
-            console.error("evt", evt);
-        }
-    };
-
-    ws.onclose = function (evt) {
-        notify('连接断开, 重新连接...')
-    };
 
     function notify(text) {
         let div = document.createElement('div');
@@ -493,30 +589,24 @@
         }, 2000)
     }
 
-    function qs(css) {
-        return document.querySelector(css);
+
+    const setPeriod = () => {
+        qs('.modal').setAttribute("class", "modal");
+        qs('.modal-close').setAttribute("class", "modal");
+
+        let period = qs("input[name='period']:checked").value;
+        let kSize = qs("input[name='kSize']:checked").value;
+        alert('周期' + period + '数量' + kSize);
+        //数据初始化
+        let url = "http://localhost:9001/btc/k?period=" + period + "&kSize=" + kSize;
+        get(url,{}, (data) => {
+            console.log(data);
+        });
+        //ws 连接
+        // initWS();
     }
 
-    function qsa(css) {
-        return document.querySelectorAll(css);
-    }
 
-    Date.prototype.Format = function (fmt) { // author: meizz
-        const o = {
-            "M+": this.getMonth() + 1, // 月份
-            "d+": this.getDate(), // 日
-            "h+": this.getHours(), // 小时
-            "m+": this.getMinutes(), // 分
-            "s+": this.getSeconds(), // 秒
-            "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
-            "S": this.getMilliseconds() // 毫秒
-        };
-        if (/(y+)/.test(fmt))
-            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-        for (const k in o)
-            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-        return fmt;
-    }
 </script>
 </body>
 
