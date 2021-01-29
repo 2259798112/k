@@ -71,41 +71,41 @@
             <button class="modal-close is-large" aria-label="close" onclick="setPeriod()"></button>
         </div>
 
-        <div class="columns">
-            <div class="column">
-                <div class="field">
-                    <label class="label">周期</label>
-                    <div class="control">
-                        <span id="iPeriod"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="column">
+<!--        <div class="columns">-->
+<!--            <div class="column">-->
+<!--                <div class="field">-->
+<!--                    <label class="label">周期</label>-->
+<!--                    <div class="control">-->
+<!--                        <span id="iPeriod"></span>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="column">-->
 
-                <div class="field">
-                    <label class="label">时间</label>
-                    <div class="control">
-                        <span id="iTime"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="field">
-                    <label class="label">倒计时</label>
-                    <div class="control">
-                        <span id="iTimeRest"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="field">
-                    <label class="label">虚拟量</label>
-                    <div class="control">
-                        <span id="iVol"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!--                <div class="field">-->
+<!--                    <label class="label">时间</label>-->
+<!--                    <div class="control">-->
+<!--                        <span id="iTime"></span>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="column">-->
+<!--                <div class="field">-->
+<!--                    <label class="label">倒计时</label>-->
+<!--                    <div class="control">-->
+<!--                        <span id="iTimeRest"></span>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="column">-->
+<!--                <div class="field">-->
+<!--                    <label class="label">虚拟量</label>-->
+<!--                    <div class="control">-->
+<!--                        <span id="iVol"></span>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
 
     <div id="main" style="height:1000px;"></div>
@@ -152,14 +152,11 @@
     let dataMA20 = calculateMA(20, dataK);
 
 
-
-
-
     const updateList = (obj) => {
         if (DATA_TYPE.now === obj.dataType) {
             let index = dates.length - 1;
             // const {buy, createAt, createTime, fclose, fcount, fhigh, fid, flow, fopen, fvol, id, period, qpBuy, qpSell, sell, updateTime} = obj;
-            const {createAt:dateString, fopen:fOpen, fclose:fClose, flow:fLow, fhigh:fHigh, buy, sell, qpBuy:cqBuy, qpSell:cqSell} = obj;
+            const {createAt: dateString, fopen: fOpen, fclose: fClose, flow: fLow, fhigh: fHigh, buy, sell, qpBuy: cqBuy, qpSell: cqSell} = obj;
             if (index >= 0 && dates[index] === dateString) {
                 let kLine = [];
                 kLine.push(fOpen);
@@ -191,7 +188,7 @@
 
                 //2 赋值
                 list.forEach(k => {
-                    const {createAt:dateString, fopen:fOpen, fclose:fClose, flow:fLow, fhigh:fHigh, buy, sell, qpBuy:cqBuy, qpSell:cqSell} = k;
+                    const {createAt: dateString, fopen: fOpen, fclose: fClose, flow: fLow, fhigh: fHigh, buy, sell, qpBuy: cqBuy, qpSell: cqSell} = k;
                     // const {dateString, fOpen, fClose, fLow, fHigh, buy, sell, cqBuy, cqSell} = k;
                     dates.push(dateString);
                     let kLine = [];
@@ -208,7 +205,7 @@
                 });
 
                 //3 最新状态
-                dates.push(new Date().Format("yyyy-MM-dd hh:mm:ss"));
+                dates.push(new Date().Format("yyyy-MM-dd hh:mm") + ':00');
                 dataK.push([]);
                 volumesBuy.push(0);
                 volumesSell.push(0);
@@ -220,7 +217,7 @@
 
 
                 // 添加最新状态
-                dates.push(new Date().Format("yyyy-MM-dd hh:mm:ss"));
+                dates.push(new Date().Format("yyyy-MM-dd hh:mm") + ':00');
                 dataK.push([]);
                 volumesBuy.push(0);
                 volumesSell.push(0);
@@ -230,7 +227,7 @@
                 //更新 倒数第二根k
 
                 const index = dates.length - 2;
-                const {createAt:dateString, fopen:fOpen, fclose:fClose, flow:fLow, fhigh:fHigh, buy, sell, qpBuy:cqBuy, qpSell:cqSell} = list[len - 1];
+                const {createAt: dateString, fopen: fOpen, fclose: fClose, flow: fLow, fhigh: fHigh, buy, sell, qpBuy: cqBuy, qpSell: cqSell} = list[len - 1];
                 // const {dateString, fOpen, fClose, fLow, fHigh, buy, sell, cqBuy, cqSell} = list[len - 1];
 
                 dates[index] = (dateString);
@@ -260,8 +257,10 @@
     };
 
 
+    const DOMAIN = '127.0.0.1';
+
     const initWS = () => {
-        const wsUrl = "ws://localhost:10001";//localhost 根据实际情况替换成 响应的ip 或者域名
+        const wsUrl = "ws://" + DOMAIN + ":10001";//localhost 根据实际情况替换成 响应的ip 或者域名
         let ws = new ReconnectingWebSocket(wsUrl);
 
         ws.onopen = function (evt) {
@@ -300,7 +299,7 @@
     }
 
 
-    const updateOption = ()=>{
+    const updateOption = () => {
         let option = {
             animation: false,
             color: colorList,
@@ -312,17 +311,37 @@
                 top: 30,
                 data: ['日K', 'MA5', 'MA10', 'MA20']
             },
+            // tooltip: {
+            //     triggerOn: 'none',
+            //     transitionDuration: 0,
+            //     confine: true,
+            //     bordeRadius: 4,
+            //     borderWidth: 1,
+            //     borderColor: '#333',
+            //     backgroundColor: 'rgba(255,255,255,0.9)',
+            //     textStyle: {
+            //         fontSize: 12,
+            //         color: '#333'
+            //     },
+            //     position: function (pos, params, el, elRect, size) {
+            //         let obj = {
+            //             top: 60
+            //         };
+            //         obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
+            //         return obj;
+            //     }
+            // },
+
             tooltip: {
-                triggerOn: 'none',
-                transitionDuration: 0,
-                confine: true,
-                bordeRadius: 4,
-                borderWidth: 1,
-                borderColor: '#333',
-                backgroundColor: 'rgba(255,255,255,0.9)',
-                textStyle: {
-                    fontSize: 12,
-                    color: '#333'
+                trigger: 'axis',
+                axisPointer: {
+                    animation: false,
+                    type: 'cross',
+                    lineStyle: {
+                        color: '#376df4',
+                        width: 2,
+                        opacity: 0.5
+                    },
                 },
                 position: function (pos, params, el, elRect, size) {
                     let obj = {
@@ -341,8 +360,8 @@
                 type: 'slider',
                 xAxisIndex: [0, 1, 2],
                 realtime: false,
-                start: 20,
-                end: 70,
+                start: 50,
+                end: 100,
                 top: 65,
                 height: 20,
                 handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
@@ -350,19 +369,19 @@
             }, {
                 type: 'inside',
                 xAxisIndex: [0, 1, 2],
-                start: 40,
-                end: 70,
+                start: 50,
+                end: 100,
                 top: 30,
                 height: 20
             }],
             xAxis: [{
                 type: 'category',
                 data: dates,
-                boundaryGap: false,
-                axisLine: {lineStyle: {color: '#777'}},
+                boundaryGap: true,
+                // axisLine: {lineStyle: {color: '#777'}},
                 axisLabel: {
                     formatter: function (value) {
-                        return echarts.format.formatTime('MM-dd', value);
+                        return echarts.format.formatTime('hh:mm', value);
                     }
                 },
                 min: 'dataMin',
@@ -375,7 +394,7 @@
                 gridIndex: 1,
                 data: dates,
                 scale: true,
-                boundaryGap: false,
+                boundaryGap: true,
                 splitLine: {show: false},
                 axisLabel: {show: false},
                 axisTick: {show: false},
@@ -383,32 +402,20 @@
                 splitNumber: 20,
                 min: 'dataMin',
                 max: 'dataMax',
-                axisPointer: {
-                    type: 'shadow',
-                    label: {show: false},
-                    triggerTooltip: true,
-                    handle: {
-                        show: true,
-                        margin: 30,
-                        color: '#B80C00'
-                    }
-                }
             }, {
                 type: 'category',
                 gridIndex: 2,
                 data: dates,
                 scale: true,
-                boundaryGap: false,
-                splitLine: {show: false},
-                axisLabel: {show: false},
-                axisTick: {show: false},
+                boundaryGap: true,
+                splitLine: {show: true},
+                axisLabel: {show: true},
+                axisTick: {show: true},
                 axisLine: {lineStyle: {color: '#777'}},
                 splitNumber: 20,
                 min: 'dataMin',
                 max: 'dataMax',
                 axisPointer: {
-                    type: 'shadow',
-                    label: {show: false},
                     triggerTooltip: true,
                     handle: {
                         show: true,
@@ -431,18 +438,18 @@
                 scale: true,
                 gridIndex: 1,
                 splitNumber: 2,
-                axisLabel: {show: false},
-                axisLine: {show: false},
-                axisTick: {show: false},
-                splitLine: {show: false}
+                axisLabel: {show: true},
+                axisLine: {show: true},
+                axisTick: {show: true},
+                splitLine: {show: true}
             }, {
                 scale: true,
                 gridIndex: 2,
                 splitNumber: 2,
-                axisLabel: {show: false},
-                axisLine: {show: false},
-                axisTick: {show: false},
-                splitLine: {show: false}
+                axisLabel: {show: true},
+                axisLine: {show: true},
+                axisTick: {show: true},
+                splitLine: {show: true}
             }],
             grid: [{
                 left: "10%",
@@ -491,11 +498,11 @@
                 itemStyle: {
                     color: '#ef232a'
                 },
-                emphasis: {
-                    itemStyle: {
-                        color: '#140'
-                    }
-                },
+                // emphasis: {
+                //     itemStyle: {
+                //         color: '#140'
+                //     }
+                // },
                 stack: 'CQ',
                 data: volumesCqBuy
             },
@@ -507,11 +514,11 @@
                     itemStyle: {
                         color: '#7fbe9e'
                     },
-                    emphasis: {
-                        itemStyle: {
-                            color: '#140'
-                        }
-                    },
+                    // emphasis: {
+                    //     itemStyle: {
+                    //         color: '#140'
+                    //     }
+                    // },
                     stack: 'CQ',
                     data: volumesCqSell
                 }, {
@@ -522,11 +529,11 @@
                     itemStyle: {
                         color: '#ef232a'
                     },
-                    emphasis: {
-                        itemStyle: {
-                            color: '#140'
-                        }
-                    },
+                    // emphasis: {
+                    //     itemStyle: {
+                    //         color: '#140'
+                    //     }
+                    // },
                     stack: 'vol',
                     data: volumesBuy
                 },
@@ -538,11 +545,11 @@
                     itemStyle: {
                         color: '#7fbe9e'
                     },
-                    emphasis: {
-                        itemStyle: {
-                            color: '#140'
-                        }
-                    },
+                    // emphasis: {
+                    //     itemStyle: {
+                    //         color: '#140'
+                    //     }
+                    // },
                     stack: 'vol',
                     data: volumesSell
                 }, {
@@ -555,14 +562,14 @@
                         borderColor: '#ef232a',
                         borderColor0: '#14b143'
                     },
-                    emphasis: {
-                        itemStyle: {
-                            color: 'black',
-                            color0: '#444',
-                            borderColor: 'black',
-                            borderColor0: '#444'
-                        }
-                    }
+                    // emphasis: {
+                    //     itemStyle: {
+                    //         color: 'black',
+                    //         color0: '#444',
+                    //         borderColor: 'black',
+                    //         borderColor0: '#444'
+                    //     }
+                    // }
                 }, {
                     name: 'MA5',
                     type: 'line',
@@ -603,10 +610,9 @@
 
         let period = qs("input[name='period']:checked").value;
         let kSize = qs("input[name='kSize']:checked").value;
-        alert('周期' + period + '数量' + kSize);
+        console.log('周期' + period + '数量' + kSize);
         //数据初始化
-        // let url = "http://localhost:9001/btc/k?period=" + period + "&kSize=" + kSize;
-        let url = "http://localhost:9001/btc/k?period=" + period + "&kSize=" + kSize + "&toNow=true";
+        let url = "http://"+DOMAIN+":9001/btc/k?period=" + period + "&kSize=" + kSize + "&toNow=true";
         get(url, {}, (json) => {
             console.log(json);
             updateList(json.data);
