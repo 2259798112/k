@@ -71,41 +71,41 @@
             <button class="modal-close is-large" aria-label="close" onclick="setPeriod()"></button>
         </div>
 
-<!--        <div class="columns">-->
-<!--            <div class="column">-->
-<!--                <div class="field">-->
-<!--                    <label class="label">周期</label>-->
-<!--                    <div class="control">-->
-<!--                        <span id="iPeriod"></span>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="column">-->
+        <!--        <div class="columns">-->
+        <!--            <div class="column">-->
+        <!--                <div class="field">-->
+        <!--                    <label class="label">周期</label>-->
+        <!--                    <div class="control">-->
+        <!--                        <span id="iPeriod"></span>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--            <div class="column">-->
 
-<!--                <div class="field">-->
-<!--                    <label class="label">时间</label>-->
-<!--                    <div class="control">-->
-<!--                        <span id="iTime"></span>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="column">-->
-<!--                <div class="field">-->
-<!--                    <label class="label">倒计时</label>-->
-<!--                    <div class="control">-->
-<!--                        <span id="iTimeRest"></span>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="column">-->
-<!--                <div class="field">-->
-<!--                    <label class="label">虚拟量</label>-->
-<!--                    <div class="control">-->
-<!--                        <span id="iVol"></span>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--                <div class="field">-->
+        <!--                    <label class="label">时间</label>-->
+        <!--                    <div class="control">-->
+        <!--                        <span id="iTime"></span>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--            <div class="column">-->
+        <!--                <div class="field">-->
+        <!--                    <label class="label">倒计时</label>-->
+        <!--                    <div class="control">-->
+        <!--                        <span id="iTimeRest"></span>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--            <div class="column">-->
+        <!--                <div class="field">-->
+        <!--                    <label class="label">虚拟量</label>-->
+        <!--                    <div class="control">-->
+        <!--                        <span id="iVol"></span>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
 
     <div id="main" style="height:1000px;"></div>
@@ -152,126 +152,80 @@
     let dataMA20 = calculateMA(20, dataK);
 
     const updateList = (obj) => {
+        /**
+         * 实时最新数据
+         */
+
         if (DATA_TYPE.r === obj.dataType) {
+            let index = dates.length-1;
+            const {buy, sell, qpBuy, qpSell, dataK:kline} = obj
+            volumesBuy[index] = buy;
+            volumesSell[index] = sell;
+            volumesCqBuy[index] = qpBuy;
+            volumesCqSell[index] = qpSell;
 
-            let index = dates.length - 1;
-            const {list} = obj;
-            const {createAt: dateString, fOpen, fClose, fLow, fHigh, buy, sell, qpBuy: cqBuy, qpSell: cqSell} = list[0];
-            console.log('realtime');
-            if (index >= 0 && dates[index] === dateString) {
-                let kLine = [];
-                kLine.push(fOpen);
-                kLine.push(fClose);
-                kLine.push(fLow);
-                kLine.push(fHigh);
-                dataK[index] = kLine;
-                volumesBuy[index] = (buy);
-                volumesSell[index] = (sell);
-                volumesCqBuy[index] = (cqBuy);
-                volumesCqSell[index] = (cqSell);
-            }
+            const {id, open, close, low, high, amount, vol, trade_turnover, count} = kline[0];
+            let k = [];
+            k.push(open);
+            k.push(close);
+            k.push(low);
+            k.push(high);
+            dataK[index] = k;
         }
-
+        /**
+         * 更新已完成K
+         */
         if (DATA_TYPE.k === obj.dataType) {
-            let index = dates.length - 1;
-            const {list} = obj;
-            const {createAt: dateString, fOpen, fClose, fLow, fHigh, buy, sell, qpBuy: cqBuy, qpSell: cqSell} = list[0];
-            if (index >= 0 && dates[index] === dateString) {
-                let kLine = [];
-                kLine.push(fOpen);
-                kLine.push(fClose);
-                kLine.push(fLow);
-                kLine.push(fHigh);
-                dataK[index] = kLine;
-                volumesBuy[index] = (buy);
-                volumesSell[index] = (sell);
-                volumesCqBuy[index] = (cqBuy);
-                volumesCqSell[index] = (cqSell);
+            const {next,qpSell,buy,sell,qpBuy,dataK:kline} = obj;
+            dates.push(next);
+            volumesBuy.push(0);
+            volumesSell.push(0);
+            volumesCqBuy.push(0);
+            volumesCqSell.push(0);
+            dataK.push([]);
 
-                dates.push(new Date().Format("yyyy-MM-dd hh:mm") + ':00');
-                dataK.push([]);
-                volumesBuy.push(0);
-                volumesSell.push(0);
-                volumesCqBuy.push(0);
-                volumesCqSell.push(0);
+            let len = dates.length;
+            volumesBuy[len - 2] = buy;
+            volumesSell[len - 2] = sell;
+            volumesCqBuy[len - 2] = qpBuy;
+            volumesCqSell[len - 2] = qpSell;
+
+            const {fClose:close,fHigh:high,fLow:low,fOpen:open} = kline[0];
+            let k = [];
+            k.push(open);
+            k.push(close);
+            k.push(low);
+            k.push(high);
+            dataK[len-2] = k;
+        }
+        /**
+         * 初始化数据
+         */
+        if (DATA_TYPE.init === obj.dataType) {
+            const {next,qpSell,buy,sell,qpBuy,dataK:kline,dates:d} = obj;
+            dates = d;
+            volumesBuy = buy;
+            volumesSell= sell;
+            volumesCqBuy= qpBuy;
+            volumesCqSell= qpSell;
+
+            for (let i = 0; i < kline.length; i++) {
+                const {fclose:close,fhigh:high,flow:low,fopen:open} = kline[i];
+                let k = [];
+                k.push(open);
+                k.push(close);
+                k.push(low);
+                k.push(high);
+                dataK.push(k);
             }
 
+            dates.push(next);
+            volumesBuy.push(0);
+            volumesSell.push(0);
+            volumesCqBuy.push(0);
+            volumesCqSell.push(0);
+            dataK.push([]);
         }
-
-        if (DATA_TYPE.open === obj.dataType) {
-            //先判断  当前有几个k
-            const {list} = obj;
-            let len = list.length;
-            if (dates.length < len) {
-                //初始化
-
-                //1 清空
-                dates = [];
-                dataK = [];
-                volumesBuy = [];
-                volumesSell = [];
-                volumesCqBuy = [];
-                volumesCqSell = [];
-
-                //2 赋值
-                list.forEach(k => {
-                    const {createAt: dateString, fopen: fOpen, fclose: fClose, flow: fLow, fhigh: fHigh, buy, sell, qpBuy: cqBuy, qpSell: cqSell} = k;
-                    // const {dateString, fOpen, fClose, fLow, fHigh, buy, sell, cqBuy, cqSell} = k;
-                    dates.push(dateString);
-                    let kLine = [];
-                    kLine.push(fOpen);
-                    kLine.push(fClose);
-                    kLine.push(fLow);
-                    kLine.push(fHigh);
-                    dataK.push(kLine);
-
-                    volumesBuy.push(buy);
-                    volumesSell.push(sell);
-                    volumesCqBuy.push(cqBuy);
-                    volumesCqSell.push(cqSell);
-                });
-
-                //3 最新状态
-                dates.push(new Date().Format("yyyy-MM-dd hh:mm") + ':00');
-                dataK.push([]);
-                volumesBuy.push(0);
-                volumesSell.push(0);
-                volumesCqBuy.push(0);
-                volumesCqSell.push(0);
-
-
-            } else {
-
-
-                // 添加最新状态
-                dates.push(new Date().Format("yyyy-MM-dd hh:mm") + ':00');
-                dataK.push([]);
-                volumesBuy.push(0);
-                volumesSell.push(0);
-                volumesCqBuy.push(0);
-                volumesCqSell.push(0);
-
-                //更新 倒数第二根k
-
-                const index = dates.length - 2;
-                const {createAt: dateString, fopen: fOpen, fclose: fClose, flow: fLow, fhigh: fHigh, buy, sell, qpBuy: cqBuy, qpSell: cqSell} = list[len - 1];
-                // const {dateString, fOpen, fClose, fLow, fHigh, buy, sell, cqBuy, cqSell} = list[len - 1];
-
-                dates[index] = (dateString);
-                let kLine = [];
-                kLine.push(fOpen);
-                kLine.push(fClose);
-                kLine.push(fLow);
-                kLine.push(fHigh);
-                dataK[index] = (kLine);
-                volumesBuy[index] = (buy);
-                volumesSell[index] = (sell);
-                volumesCqBuy[index] = (cqBuy);
-                volumesCqSell[index] = (cqSell);
-            }
-
-        }
-
 
         dataMA5 = calculateMA(5, dataK);
         dataMA10 = calculateMA(10, dataK);
@@ -283,7 +237,7 @@
     const DATA_TYPE = {
         r: "r",
         k: "k",
-        open: "open",
+        init: "init",
     };
 
 
@@ -615,11 +569,10 @@
         let kSize = qs("input[name='kSize']:checked").value;
         console.log('周期' + period + '数量' + kSize);
         //数据初始化
-        let url = "http://"+DOMAIN+":9001/btc/k?period=" + period + "&kSize=" + kSize + "&toNow=true";
+        let url = "http://" + DOMAIN + ":9001/init?period=" + period + "&size=" + kSize ;
         get(url, {}, (json) => {
             console.log(json);
             updateList(json.data);
-
             initWS();
         });
     }
