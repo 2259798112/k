@@ -185,10 +185,10 @@
             dataK.push([]);
 
             let len = dates.length;
-            volumesBuy[len - 2] = buy;
-            volumesSell[len - 2] = sell;
-            volumesCqBuy[len - 2] = qpBuy;
-            volumesCqSell[len - 2] = qpSell;
+            volumesBuy[len - 2] = buy[0];
+            volumesSell[len - 2] = sell[0];
+            volumesCqBuy[len - 2] = qpBuy[0];
+            volumesCqSell[len - 2] = qpSell[0];
 
             const {fClose:close,fHigh:high,fLow:low,fOpen:open} = kline[0];
             let k = [];
