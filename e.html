@@ -430,7 +430,10 @@
                 axisTick: {show: true},
                 axisLabel: {
                     inside: false,
-                    formatter: '{value}\n'
+                    // formatter: '{value}\n'
+                    formatter: function (value, index) {
+                        return Math.round(value)
+                    }
                 },
                 minorSplitLine: {
                     show: true
