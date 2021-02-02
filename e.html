@@ -449,10 +449,8 @@
                     formatter: function (value, index) {
                         if (value >= 0 && value < 1000) {
                             return value
-                        } else if (value >= 1000 && value < 1000 * 1000) {
-                            return (value / 1000) + "K"
                         } else {
-                            return (value / (1000*1000)) + "M"
+                            return (value / 1000) + "K"
                         }
                     }
                 },
@@ -463,17 +461,17 @@
                 scale: true,
                 gridIndex: 2,
                 splitNumber: 2,
-                axisLabel: {show: true,
+                axisLabel: {
+                    show: true,
                     // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
                     formatter: function (value, index) {
                         if (value >= 0 && value < 1000) {
                             return value
-                        } else if (value >= 1000 && value < 1000 * 1000) {
-                            return (value / 1000) + "K"
                         } else {
-                            return (value / (1000*1000)) + "M"
+                            return (value / 1000) + "K"
                         }
-                    }},
+                    }
+                },
                 axisLine: {show: true},
                 axisTick: {show: true},
                 splitLine: {show: true}
@@ -481,17 +479,17 @@
                 scale: true,
                 gridIndex: 3,
                 splitNumber: 2,
-                axisLabel: {show: true,
+                axisLabel: {
+                    show: true,
                     // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
                     formatter: function (value, index) {
                         if (value >= 0 && value < 1000) {
                             return value
-                        } else if (value >= 1000 && value < 1000 * 1000) {
-                            return (value / 1000) + "K"
                         } else {
-                            return (value / (1000*1000)) + "M"
+                            return (value / 1000) + "K"
                         }
-                    }},
+                    }
+                },
                 axisLine: {show: true},
                 axisTick: {show: true},
                 splitLine: {show: true}
