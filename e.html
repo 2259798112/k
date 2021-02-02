@@ -40,11 +40,11 @@
                             <div class="control">
                                 周期选择：
                                 <label class="radio">
-                                    <input type="radio" name="period" value="1min">
+                                    <input type="radio" name="period" value="1min" checked>
                                     1min
                                 </label>
                                 <label class="radio">
-                                    <input type="radio" name="period" value="5min" checked>
+                                    <input type="radio" name="period" value="5min">
                                     5min
                                 </label>
                                 <label class="radio">
@@ -66,6 +66,22 @@
                                 <label class="radio">
                                     <input type="radio" name="kSize" value="100">
                                     100
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="kSize" value="240">
+                                    240
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="kSize" value="480">
+                                    480
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="kSize" value="720">
+                                    720
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="kSize" value="1440">
+                                    1440
                                 </label>
                             </div>
                         </div>
@@ -343,12 +359,12 @@
             },
             axisPointer: {
                 link: [{
-                    xAxisIndex: [0, 1, 2]
+                    xAxisIndex: [0, 1, 2,3]
                 }]
             },
             dataZoom: [{
                 type: 'slider',
-                xAxisIndex: [0, 1, 2],
+                xAxisIndex: [0, 1, 2,3],
                 realtime: true,
                 // start: 50,
                 // end: 100,
@@ -358,7 +374,7 @@
                 handleSize: '100%'
             }, {
                 type: 'inside',
-                xAxisIndex: [0, 1, 2],
+                xAxisIndex: [0, 1, 2,3],
                 // start: 50,
                 // end: 100,
                 top: 30,
@@ -662,7 +678,7 @@
         let kSize = qs("input[name='kSize']:checked").value;
         console.log('周期' + period + '数量' + kSize);
         //数据初始化
-        let url = "http://" + DOMAIN + ":9001/init?period=" + period + "&size=" + kSize;
+        let url = "http://" + "localhost" + ":9001/init?period=" + period + "&size=" + kSize;
         get(url, {}, (json) => {
             console.log(json);
             updateList(json.data);
