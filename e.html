@@ -144,6 +144,10 @@
 
     let volumesBuy = [];//[143050, 0, 47326, 152548, 100660, 32466, 0, 4322, 46648, 41742, 47396, 26136, 94354, 76932, 53270, 40786, 17370, 56968, 0, 0, 0, 0, 109670, 73426, 78790, 63704, 92978, 28094, 28204, 67910, 36274, 41358, 111246, 30426, 214916, 168946, 137274, 60428, 45596, 44474, 22876, 240782, 111448, 199688, 181994, 239876, 208088, 83926, 51286, 153904, 0];
     let volumesSell = [];//[143050, 0, 47326, 152548, 100660, 32466, 0, 4322, 46648, 41742, 47396, 26136, 94354, 76932, 53270, 40786, 17370, 56968, 0, 0, 0, 0, 109670, 73426, 78790, 63704, 92978, 28094, 28204, 67910, 36274, 41358, 111246, 30426, 214916, 168946, 137274, 60428, 45596, 44474, 22876, 240782, 111448, 199688, 181994, 239876, 208088, 83926, 51286, 153904, 0];
+
+    let volNB = [];//[143050, 0, 47326, 152548, 100660, 32466, 0, 4322, 46648, 41742, 47396, 26136, 94354, 76932, 53270, 40786, 17370, 56968, 0, 0, 0, 0, 109670, 73426, 78790, 63704, 92978, 28094, 28204, 67910, 36274, 41358, 111246, 30426, 214916, 168946, 137274, 60428, 45596, 44474, 22876, 240782, 111448, 199688, 181994, 239876, 208088, 83926, 51286, 153904, 0];
+    let volNS = [];//[143050, 0, 47326, 152548, 100660, 32466, 0, 4322, 46648, 41742, 47396, 26136, 94354, 76932, 53270, 40786, 17370, 56968, 0, 0, 0, 0, 109670, 73426, 78790, 63704, 92978, 28094, 28204, 67910, 36274, 41358, 111246, 30426, 214916, 168946, 137274, 60428, 45596, 44474, 22876, 240782, 111448, 199688, 181994, 239876, 208088, 83926, 51286, 153904, 0];
+
     let volumesCqBuy = [];//[143050, 0, 47326, 152548, 100660, 32466, 0, 4322, 46648, 41742, 47396, 26136, 94354, 76932, 53270, 40786, 17370, 56968, 0, 0, 0, 0, 109670, 73426, 78790, 63704, 92978, 28094, 28204, 67910, 36274, 41358, 111246, 30426, 214916, 168946, 137274, 60428, 45596, 44474, 22876, 240782, 111448, 199688, 181994, 239876, 208088, 83926, 51286, 153904, 0];
     let volumesCqSell = [];//[143050, 0, 47326, 152548, 100660, 32466, 0, 4322, 46648, 41742, 47396, 26136, 94354, 76932, 53270, 40786, 17370, 56968, 0, 0, 0, 0, 109670, 73426, 78790, 63704, 92978, 28094, 28204, 67910, 36274, 41358, 111246, 30426, 214916, 168946, 137274, 60428, 45596, 44474, 22876, 240782, 111448, 199688, 181994, 239876, 208088, 83926, 51286, 153904, 0];
 
@@ -157,10 +161,12 @@
          */
 
         if (DATA_TYPE.r === obj.dataType) {
-            let index = dates.length-1;
-            const {buy, sell, qpBuy, qpSell, dataK:kline} = obj
+            let index = dates.length - 1;
+            const {buy, sell, nb, ns, qpBuy, qpSell, dataK: kline} = obj
             volumesBuy[index] = buy;
             volumesSell[index] = sell;
+            volNB[index] = nb;
+            volNS[index] = ns;
             volumesCqBuy[index] = qpBuy;
             volumesCqSell[index] = qpSell;
 
@@ -176,10 +182,14 @@
          * 更新已完成K
          */
         if (DATA_TYPE.k === obj.dataType) {
-            const {next,qpSell,buy,sell,qpBuy,dataK:kline} = obj;
+            const {next, qpSell, buy, sell, nb, ns, qpBuy, dataK: kline} = obj;
             dates.push(next);
             volumesBuy.push(0);
             volumesSell.push(0);
+
+            volNB.push(0);
+            volNS.push(0);
+
             volumesCqBuy.push(0);
             volumesCqSell.push(0);
             dataK.push([]);
@@ -187,30 +197,38 @@
             let len = dates.length;
             volumesBuy[len - 2] = buy[0];
             volumesSell[len - 2] = sell[0];
+
+            volNB[len - 2] = nb[0];
+            volNS[len - 2] = ns[0];
+
             volumesCqBuy[len - 2] = qpBuy[0];
             volumesCqSell[len - 2] = qpSell[0];
 
-            const {fClose:close,fHigh:high,fLow:low,fOpen:open} = kline[0];
+            const {fClose: close, fHigh: high, fLow: low, fOpen: open} = kline[0];
             let k = [];
             k.push(open);
             k.push(close);
             k.push(low);
             k.push(high);
-            dataK[len-2] = k;
+            dataK[len - 2] = k;
         }
         /**
          * 初始化数据
          */
         if (DATA_TYPE.init === obj.dataType) {
-            const {next,qpSell,buy,sell,qpBuy,dataK:kline,dates:d} = obj;
+            const {next, qpSell, buy, sell, nb, ns, qpBuy, dataK: kline, dates: d} = obj;
             dates = d;
             volumesBuy = buy;
-            volumesSell= sell;
-            volumesCqBuy= qpBuy;
-            volumesCqSell= qpSell;
+            volumesSell = sell;
+
+            volNB = nb;
+            volNS = ns;
+
+            volumesCqBuy = qpBuy;
+            volumesCqSell = qpSell;
 
             for (let i = 0; i < kline.length; i++) {
-                const {fclose:close,fhigh:high,flow:low,fopen:open} = kline[i];
+                const {fclose: close, fhigh: high, flow: low, fopen: open} = kline[i];
                 let k = [];
                 k.push(open);
                 k.push(close);
@@ -222,6 +240,8 @@
             dates.push(next);
             volumesBuy.push(0);
             volumesSell.push(0);
+            volNB.push(0);
+            volNS.push(0);
             volumesCqBuy.push(0);
             volumesCqSell.push(0);
             dataK.push([]);
@@ -241,8 +261,8 @@
     };
 
 
-    // const DOMAIN = '127.0.0.1';
-    const DOMAIN = 'dongzhihu.com';
+    const DOMAIN = '127.0.0.1';
+    // const DOMAIN = 'dongzhihu.com';
 
     const initWS = () => {
         const wsUrl = "ws://" + DOMAIN + ":10001";//localhost 根据实际情况替换成 响应的ip 或者域名
@@ -380,15 +400,25 @@
                 splitNumber: 20,
                 min: 'dataMin',
                 max: 'dataMax',
+            }, {
+                type: 'category',
+                gridIndex: 3,
+                data: dates,
+                scale: true,
+                boundaryGap: true,
+                splitLine: {show: true},
+                axisLabel: {show: true},
+                axisTick: {show: true},
+                axisLine: {lineStyle: {color: '#777'}},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax',
             }],
             yAxis: [{
-                scale: false,
-				max: function (value) {
-					return value.max + 20;
-				},
-				min: function (value) {
-					return value.min - 20;
-				},
+                scale: false,//min max 存在是 scale 无效
+                max: 'dataMax',
+                min: 'dataMin',
+                interval: 100,
                 splitNumber: 1,
                 axisLine: {lineStyle: {color: '#777'}},
                 splitLine: {show: true},
@@ -397,12 +427,13 @@
                     inside: false,
                     formatter: '{value}\n'
                 },
-			    minorSplitLine: {
-				  show: true
-				},
-				minorTick: {
-				  show: true
-				}
+                minorSplitLine: {
+                    show: true
+                },
+                minorTick: {
+                    show: true,
+                    splitNumber: 2,
+                }
             }, {
                 scale: true,
                 gridIndex: 1,
@@ -414,6 +445,14 @@
             }, {
                 scale: true,
                 gridIndex: 2,
+                splitNumber: 2,
+                axisLabel: {show: true},
+                axisLine: {show: true},
+                axisTick: {show: true},
+                splitLine: {show: true}
+            }, {
+                scale: true,
+                gridIndex: 3,
                 splitNumber: 2,
                 axisLabel: {show: true},
                 axisLine: {show: true},
@@ -433,8 +472,13 @@
             }, {
                 left: "10%",
                 right: "10%",
-                height: 100,
+                height: 50,
                 top: 650
+            }, {
+                left: "10%",
+                right: "10%",
+                height: 100,
+                top: 750
             }],
             graphic: [{
                 type: 'group',
@@ -462,32 +506,22 @@
             series: [{
                 name: 'CQ_buy',
                 type: 'bar',
-                xAxisIndex: 2,
-                yAxisIndex: 2,
+                xAxisIndex: 3,
+                yAxisIndex: 3,
                 itemStyle: {
                     color: '#ef232a'
                 },
-                // emphasis: {
-                //     itemStyle: {
-                //         color: '#140'
-                //     }
-                // },
                 stack: 'CQ',
                 data: volumesCqBuy
             },
                 {
                     name: 'CQ_sell',
                     type: 'bar',
-                    xAxisIndex: 2,
-                    yAxisIndex: 2,
+                    xAxisIndex: 3,
+                    yAxisIndex: 3,
                     itemStyle: {
                         color: '#7fbe9e'
                     },
-                    // emphasis: {
-                    //     itemStyle: {
-                    //         color: '#140'
-                    //     }
-                    // },
                     stack: 'CQ',
                     data: volumesCqSell
                 }, {
@@ -498,11 +532,6 @@
                     itemStyle: {
                         color: '#ef232a'
                     },
-                    // emphasis: {
-                    //     itemStyle: {
-                    //         color: '#140'
-                    //     }
-                    // },
                     stack: 'vol',
                     data: volumesBuy
                 },
@@ -514,13 +543,30 @@
                     itemStyle: {
                         color: '#7fbe9e'
                     },
-                    // emphasis: {
-                    //     itemStyle: {
-                    //         color: '#140'
-                    //     }
-                    // },
                     stack: 'vol',
                     data: volumesSell
+                }, {
+                    name: 'net_vol_buy',
+                    type: 'bar',
+                    xAxisIndex: 2,
+                    yAxisIndex: 2,
+                    itemStyle: {
+                        // color: '#ef232a'
+                        color: '#FFCC00'
+                    },
+                    stack: 'n',
+                    data: volNB
+                },
+                {
+                    name: 'net_vol_sell',
+                    type: 'bar',
+                    xAxisIndex: 2,
+                    yAxisIndex: 2,
+                    itemStyle: {
+                        color: '#0033FF'
+                    },
+                    stack: 'n',
+                    data: volNS
                 }, {
                     type: 'candlestick',
                     name: '日K',
@@ -531,14 +577,6 @@
                         borderColor: '#ef232a',
                         borderColor0: '#14b143'
                     },
-                    // emphasis: {
-                    //     itemStyle: {
-                    //         color: 'black',
-                    //         color0: '#444',
-                    //         borderColor: 'black',
-                    //         borderColor0: '#444'
-                    //     }
-                    // }
                 }, {
                     name: 'MA5',
                     type: 'line',
@@ -581,7 +619,7 @@
         let kSize = qs("input[name='kSize']:checked").value;
         console.log('周期' + period + '数量' + kSize);
         //数据初始化
-        let url = "http://" + DOMAIN + ":9001/init?period=" + period + "&size=" + kSize ;
+        let url = "http://" + DOMAIN + ":9001/init?period=" + period + "&size=" + kSize;
         get(url, {}, (json) => {
             console.log(json);
             updateList(json.data);
