@@ -382,15 +382,27 @@
                 max: 'dataMax',
             }],
             yAxis: [{
-                scale: true,
+                scale: false,
+				max: function (value) {
+					return value.max + 20;
+				},
+				min: function (value) {
+					return value.min - 20;
+				},
                 splitNumber: 1,
                 axisLine: {lineStyle: {color: '#777'}},
                 splitLine: {show: true},
                 axisTick: {show: true},
                 axisLabel: {
-                    inside: true,
+                    inside: false,
                     formatter: '{value}\n'
-                }
+                },
+			    minorSplitLine: {
+				  show: true
+				},
+				minorTick: {
+				  show: true
+				}
             }, {
                 scale: true,
                 gridIndex: 1,
