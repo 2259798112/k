@@ -10,11 +10,12 @@
 
     <!-- 引入 echarts.js -->
     <!--    <script src="js/echarts.min.js"></script>-->
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.0.1/dist/echarts.min.js" integrity="sha256-CiuyzJ79h36eS2B+4SqzA0elMhSYkPsGmforYbgrYOM=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.0.1/dist/echarts.min.js"
+            integrity="sha256-CiuyzJ79h36eS2B+4SqzA0elMhSYkPsGmforYbgrYOM=" crossorigin="anonymous"></script>
     <!--    bulma-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-<!--    <link rel="stylesheet" href="css/bulma.min.css">-->
-<!--    <script defer src="css/all.js"></script>-->
+    <!--    <link rel="stylesheet" href="css/bulma.min.css">-->
+    <!--    <script defer src="css/all.js"></script>-->
 
     <style>
         .notification {
@@ -442,15 +443,37 @@
                 scale: true,
                 gridIndex: 1,
                 splitNumber: 2,
-                axisLabel: {show: true},
+                axisLabel: {
+                    show: true,
+                    // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
+                    formatter: function (value, index) {
+                        if (value >= 0 && value < 1000) {
+                            return value
+                        } else if (value >= 1000 && value < 1000 * 1000) {
+                            return (value / 1000) + "K"
+                        } else {
+                            return (value / (1000*1000)) + "M"
+                        }
+                    }
+                },
                 axisLine: {show: true},
                 axisTick: {show: true},
-                splitLine: {show: true}
+                splitLine: {show: true},
             }, {
                 scale: true,
                 gridIndex: 2,
                 splitNumber: 2,
-                axisLabel: {show: true},
+                axisLabel: {show: true,
+                    // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
+                    formatter: function (value, index) {
+                        if (value >= 0 && value < 1000) {
+                            return value
+                        } else if (value >= 1000 && value < 1000 * 1000) {
+                            return (value / 1000) + "K"
+                        } else {
+                            return (value / (1000*1000)) + "M"
+                        }
+                    }},
                 axisLine: {show: true},
                 axisTick: {show: true},
                 splitLine: {show: true}
@@ -458,7 +481,17 @@
                 scale: true,
                 gridIndex: 3,
                 splitNumber: 2,
-                axisLabel: {show: true},
+                axisLabel: {show: true,
+                    // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
+                    formatter: function (value, index) {
+                        if (value >= 0 && value < 1000) {
+                            return value
+                        } else if (value >= 1000 && value < 1000 * 1000) {
+                            return (value / 1000) + "K"
+                        } else {
+                            return (value / (1000*1000)) + "M"
+                        }
+                    }},
                 axisLine: {show: true},
                 axisTick: {show: true},
                 splitLine: {show: true}
@@ -483,7 +516,7 @@
                 top: 650
             }, {
                 // containLabel: true,
-                 left: "15%",
+                left: "15%",
                 // right: "10%",
                 height: 100,
                 top: 750
