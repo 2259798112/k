@@ -169,15 +169,15 @@
             if (i >= tickBegin) {
                 maSum = maSum - p;
                 ma = maSum / maDays;
-                mas.push(ma);
+                mas.push(Math.round(ma));
                 bstart = i - tickBegin;
                 p = priceArray[bstart];
                 mdSum = priceArray.slice(bstart, bstart + maDays).reduce(function (a, b) {
                     return a + Math.pow(b - ma, 2);
                 }, 0);
                 md = Math.sqrt(mdSum / maDays);
-                ups.push(ma + 2 * md);
-                lows.push(ma - 2 * md);
+                ups.push(Math.round(ma + 2 * md));
+                lows.push(Math.round(ma - 2 * md));
             } else {
                 //ugly constant, just keep the same type for client
                 ups.push('-');
