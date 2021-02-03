@@ -140,7 +140,7 @@
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 <script type="text/javascript">
 
-
+    let lastClose = 0;
     // 基于准备好的dom，初始化echarts实例
     let myChart = echarts.init(document.getElementById('main'));
 
@@ -238,6 +238,13 @@
             k.push(low);
             k.push(high);
             dataK[index] = k;
+
+            if (close - lastClose > 0) {
+                qs('title').innerText = "⏫ " + close;
+            } else {
+                qs('title').innerText = "⏬ " + close;
+            }
+            lastClose = close;
         }
         /**
          * 更新已完成K
