@@ -127,6 +127,10 @@
         <!--            </div>-->
         <!--        </div>-->
     </div>
+    <div class="container" id="iTime">
+
+    </div>
+
 
     <div id="main" style="height:1000px;"></div>
 
@@ -740,6 +744,10 @@
         });
     }
 
+
+    setInterval(() => {
+        qs("#iTime").innerText = new Date().toLocaleString();
+    }, 500)
 
 </script>
 </body>
