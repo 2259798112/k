@@ -135,6 +135,8 @@
 
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 <script type="text/javascript">
+
+
     // 基于准备好的dom，初始化echarts实例
     let myChart = echarts.init(document.getElementById('main'));
 
@@ -157,6 +159,35 @@
         return result;
     }
 
+    const calcBOLL = (priceArray) => {
+        //移动平均线周期为20
+        let maDays = 20, tickBegin = maDays - 1, maSum = 0, p = 0;
+        let ups = [], mas = [], lows = [];
+        for (let i = 0; i < priceArray.length; i++) {
+            let c = priceArray[i], ma, md, bstart, mdSum;
+            maSum += c;
+            if (i >= tickBegin) {
+                maSum = maSum - p;
+                ma = maSum / maDays;
+                mas.push(ma);
+                bstart = i - tickBegin;
+                p = priceArray[bstart];
+                mdSum = priceArray.slice(bstart, bstart + maDays).reduce(function (a, b) {
+                    return a + Math.pow(b - ma, 2);
+                }, 0);
+                md = Math.sqrt(mdSum / maDays);
+                ups.push(ma + 2 * md);
+                lows.push(ma - 2 * md);
+            } else {
+                //ugly constant, just keep the same type for client
+                ups.push('-');
+                mas.push('-');
+                lows.push('-');
+            }
+        }
+        return {"up": ups, "mid": mas, "low": lows};
+    };
+
 
     //[open,close,low,high,vol]
     //[open, close, lowest, highest] （即：[开盘值, 收盘值, 最低值, 最高值]）
@@ -172,9 +203,14 @@
     let volumesCqBuy = [];//[143050, 0, 47326, 152548, 100660, 32466, 0, 4322, 46648, 41742, 47396, 26136, 94354, 76932, 53270, 40786, 17370, 56968, 0, 0, 0, 0, 109670, 73426, 78790, 63704, 92978, 28094, 28204, 67910, 36274, 41358, 111246, 30426, 214916, 168946, 137274, 60428, 45596, 44474, 22876, 240782, 111448, 199688, 181994, 239876, 208088, 83926, 51286, 153904, 0];
     let volumesCqSell = [];//[143050, 0, 47326, 152548, 100660, 32466, 0, 4322, 46648, 41742, 47396, 26136, 94354, 76932, 53270, 40786, 17370, 56968, 0, 0, 0, 0, 109670, 73426, 78790, 63704, 92978, 28094, 28204, 67910, 36274, 41358, 111246, 30426, 214916, 168946, 137274, 60428, 45596, 44474, 22876, 240782, 111448, 199688, 181994, 239876, 208088, 83926, 51286, 153904, 0];
 
-    let dataMA5 = calculateMA(5, dataK);
-    let dataMA10 = calculateMA(10, dataK);
-    let dataMA20 = calculateMA(20, dataK);
+    // let dataMA5 = [];//calculateMA(5, dataK);
+    // let dataMA10 = [];//calculateMA(10, dataK);
+    // let dataMA20 = [];//calculateMA(20, dataK);
+
+
+    let bollUP = [];//calculateMA(5, dataK);
+    let bollMID = [];//calculateMA(10, dataK);
+    let bollLOW = [];//calculateMA(20, dataK);
 
     const updateList = (obj) => {
         /**
@@ -268,9 +304,20 @@
             dataK.push([]);
         }
 
-        dataMA5 = calculateMA(5, dataK);
-        dataMA10 = calculateMA(10, dataK);
-        dataMA20 = calculateMA(20, dataK);
+        // dataMA5 = calculateMA(5, dataK);
+        // dataMA10 = calculateMA(10, dataK);
+        // dataMA20 = calculateMA(20, dataK);
+
+
+        let price = [];
+        for (let i = 0; i < dataK.length; i++) {
+            price.push(dataK[i][1]);
+        }
+
+        const {up, mid, low} = calcBOLL(price);
+        bollUP = up;
+        bollMID = mid;
+        bollLOW = low;
 
         updateOption();
     };
@@ -335,7 +382,8 @@
             },
             legend: {
                 top: 30,
-                data: ['日K', 'MA5', 'MA10', 'MA20']
+                // data: ['日K', 'MA5', 'MA10', 'MA20']
+                data: ['日K', 'up', 'mid', 'low']
             },
 
             tooltip: {
@@ -359,12 +407,12 @@
             },
             axisPointer: {
                 link: [{
-                    xAxisIndex: [0, 1, 2,3]
+                    xAxisIndex: [0, 1, 2, 3]
                 }]
             },
             dataZoom: [{
                 type: 'slider',
-                xAxisIndex: [0, 1, 2,3],
+                xAxisIndex: [0, 1, 2, 3],
                 realtime: true,
                 // start: 50,
                 // end: 100,
@@ -374,7 +422,7 @@
                 handleSize: '100%'
             }, {
                 type: 'inside',
-                xAxisIndex: [0, 1, 2,3],
+                xAxisIndex: [0, 1, 2, 3],
                 // start: 50,
                 // end: 100,
                 top: 30,
@@ -545,17 +593,17 @@
                 width: 300,
                 bounding: 'raw',
                 children: [{
-                    id: 'MA5',
+                    id: 'up',
                     type: 'text',
                     style: {fill: colorList[1], font: labelFont},
                     left: 0
                 }, {
-                    id: 'MA10',
+                    id: 'mid',
                     type: 'text',
                     style: {fill: colorList[2], font: labelFont},
                     left: 'center'
                 }, {
-                    id: 'MA20',
+                    id: 'low',
                     type: 'text',
                     style: {fill: colorList[3], font: labelFont},
                     right: 0
@@ -637,27 +685,30 @@
                         borderColor0: '#14b143'
                     },
                 }, {
-                    name: 'MA5',
+                    name: 'up',
                     type: 'line',
-                    data: dataMA5,
+                    // data: dataMA5,
+                    data: bollUP,
                     smooth: true,
                     showSymbol: false,
                     lineStyle: {
                         width: 1
                     }
                 }, {
-                    name: 'MA10',
+                    name: 'mid',
                     type: 'line',
-                    data: dataMA10,
+                    // data: dataMA10,
+                    data: bollMID,
                     smooth: true,
                     showSymbol: false,
                     lineStyle: {
                         width: 1
                     }
                 }, {
-                    name: 'MA20',
+                    name: 'low',
                     type: 'line',
-                    data: dataMA20,
+                    // data: dataMA20,
+                    data: bollLOW,
                     smooth: true,
                     showSymbol: false,
                     lineStyle: {
@@ -678,7 +729,7 @@
         let kSize = qs("input[name='kSize']:checked").value;
         console.log('周期' + period + '数量' + kSize);
         //数据初始化
-        let url = "http://" + "localhost" + ":9001/init?period=" + period + "&size=" + kSize;
+        let url = "http://" + "dongzhihu.com" + ":9001/init?period=" + period + "&size=" + kSize;
         get(url, {}, (json) => {
             console.log(json);
             updateList(json.data);
