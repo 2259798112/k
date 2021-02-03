@@ -192,6 +192,37 @@
         return {"up": ups, "mid": mas, "low": lows};
     };
 
+    const macd = function (ticks) {
+        let ema12 = [], ema26 = [], diffs = [], deas = [], bars = [];
+        for (let i = 0; i < ticks.length; i++) {
+            let c = ticks[i];
+            if (i === 0) {
+                ema12.push(c);
+                ema26.push(c);
+                deas.push(0);
+            } else {
+                ema12.push(ema(ema12[i - 1], c, 12));
+                ema26.push(ema(ema26[i - 1], c, 26));
+            }
+            diffs.push(ema12[i] - ema26[i]);
+            if (i !== 0) {
+                deas.push(dea(deas[i - 1], diffs[i]));
+            }
+            bars.push((diffs[i] - deas[i]) * 2);
+        }
+        return {diffs: diffs, deas: deas, bars: bars};
+    };
+
+
+    const ema = function (lastEma, closePrice, units) {
+        return (lastEma * (units - 1) + closePrice * 2) / (units + 1);
+    };
+
+    const dea = function (lastDea, curDiff) {
+        return (lastDea * 8 + curDiff * 2) / 10;
+    };
+
+
     const bkm = (value) => {
         if (value >= 0 && value < 1000) {
             return value
@@ -221,6 +252,7 @@
     // let dataMA20 = [];//calculateMA(20, dataK);
 
 
+    let diff = [];
     let bollUP = [];
     let bollMID = [];
     let bollLOW = [];
@@ -343,6 +375,8 @@
         bollMID = mid;
         bollLOW = low;
 
+        const {diffs} = macd(price);
+        diff = diffs;
         updateOption();
     };
 
@@ -430,12 +464,12 @@
             },
             axisPointer: {
                 link: [{
-                    xAxisIndex: [0, 1, 2]
+                    xAxisIndex: [0, 1, 2,3]
                 }]
             },
             dataZoom: [{
                 type: 'slider',
-                xAxisIndex: [0, 1, 2],
+                xAxisIndex: [0, 1, 2,3],
                 realtime: true,
                 // start: 50,
                 // end: 100,
@@ -445,7 +479,7 @@
                 handleSize: '100%'
             }, {
                 type: 'inside',
-                xAxisIndex: [0, 1, 2],
+                xAxisIndex: [0, 1, 2,3],
                 top: 30,
                 height: 20
             }],
@@ -479,6 +513,19 @@
             }, {
                 type: 'category',
                 gridIndex: 2,
+                data: dates,
+                scale: true,
+                boundaryGap: true,
+                splitLine: {show: true},
+                axisLabel: {show: true},
+                axisTick: {show: true},
+                axisLine: {lineStyle: {color: '#777'}},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax',
+            }, {
+                type: 'category',
+                gridIndex: 3,
                 data: dates,
                 scale: true,
                 boundaryGap: true,
@@ -542,6 +589,21 @@
                 axisLine: {show: true},
                 axisTick: {show: true},
                 splitLine: {show: true}
+            }, {
+                scale: true,
+                gridIndex: 3,
+                splitNumber: 2,
+                axisLabel: {
+                    inside: true,
+                    show: true,
+                    // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
+                    formatter: function (value, index) {
+                        return bkm(value);
+                    }
+                },
+                axisLine: {show: true},
+                axisTick: {show: true},
+                splitLine: {show: true}
             }],
             grid: [{
                 top: 110,
@@ -552,6 +614,9 @@
             }, {
                 height: 150,
                 top: 520
+            }, {
+                height: 150,
+                top: 690
             }],
             graphic: [{
                 type: 'group',
@@ -578,10 +643,18 @@
             }],
             series: [
                 {
-                    name: 'CQ_buy',
-                    type: 'bar',
+                    name: 'macd',
+                    type: "line",
+                    smooth: true,
                     xAxisIndex: 2,
                     yAxisIndex: 2,
+                    data: diff
+                },
+                {
+                    name: 'CQ_buy',
+                    type: 'bar',
+                    xAxisIndex: 3,
+                    yAxisIndex: 3,
                     itemStyle: {
                         color: '#ef232a'
                     },
@@ -591,8 +664,8 @@
                 {
                     name: 'CQ_sell',
                     type: 'bar',
-                    xAxisIndex: 2,
-                    yAxisIndex: 2,
+                    xAxisIndex: 3,
+                    yAxisIndex: 3,
                     itemStyle: {
                         color: '#7fbe9e'
                     },
