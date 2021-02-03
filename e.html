@@ -192,6 +192,15 @@
         return {"up": ups, "mid": mas, "low": lows};
     };
 
+    const bkm = (value) => {
+        if (value >= 0 && value < 1000) {
+            return value
+        } else if (value >= 1000 && value < 1000 * 1000) {
+            return (value / 1000) + "K"
+        } else {
+            return (value / (1000 * 1000)) + "M"
+        }
+    };
 
     //[open,close,low,high,vol]
     //[open, close, lowest, highest] （即：[开盘值, 收盘值, 最低值, 最高值]）
@@ -526,11 +535,7 @@
                     show: true,
                     // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
                     formatter: function (value, index) {
-                        if (value >= 0 && value < 1000) {
-                            return value
-                        } else {
-                            return (value / 1000) + "K"
-                        }
+                        return bkm(value);
                     }
                 },
                 axisLine: {show: true},
@@ -545,11 +550,7 @@
                     show: true,
                     // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
                     formatter: function (value, index) {
-                        if (value >= 0 && value < 1000) {
-                            return value
-                        } else {
-                            return (value / 1000) + "K"
-                        }
+                        return bkm(value);
                     }
                 },
                 axisLine: {show: true},
@@ -564,11 +565,7 @@
                     show: true,
                     // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
                     formatter: function (value, index) {
-                        if (value >= 0 && value < 1000) {
-                            return value
-                        } else {
-                            return (value / 1000) + "K"
-                        }
+                        return bkm(value);
                     }
                 },
                 axisLine: {show: true},
