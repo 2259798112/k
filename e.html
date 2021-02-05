@@ -23,128 +23,159 @@
             display: flex;
             right: 10%;
         }
+
+        #left {
+            top: 30px;
+        }
     </style>
 </head>
 
 <body>
 <section class="section">
     <div id="notification"></div>
-    <div class="container" id="content">
 
-        <div id="modal" class="modal is-active">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <article class="media">
-                        <div class="media-content">
-                            <div class="control">
-                                周期选择：
-                                <label class="radio">
-                                    <input type="radio" name="period" value="1min" checked>
-                                    1min
-                                </label>
-                                <label class="radio">
-                                    <input type="radio" name="period" value="5min">
-                                    5min
-                                </label>
-                                <label class="radio">
-                                    <input type="radio" name="period" value="30min">
-                                    30min
-                                </label>
-                            </div>
+    <div class="columns">
+        <div class="column is-2-desktop">
+            <div class="" id="left">
+                <div class="field">
+                    <div class="control">
+                        <label id="iTime"> </label>
+                        <progress class="progress is-success" value="0" max="100">时间进度</progress>
+                    </div>
 
-                            <div class="control">
-                                K线数量：
-                                <label class="radio">
-                                    <input type="radio" name="kSize" value="20">
-                                    20
-                                </label>
-                                <label class="radio">
-                                    <input type="radio" name="kSize" value="50" checked>
-                                    50
-                                </label>
-                                <label class="radio">
-                                    <input type="radio" name="kSize" value="100">
-                                    100
-                                </label>
-                                <label class="radio">
-                                    <input type="radio" name="kSize" value="240">
-                                    240
-                                </label>
-                                <label class="radio">
-                                    <input type="radio" name="kSize" value="480">
-                                    480
-                                </label>
-                                <label class="radio">
-                                    <input type="radio" name="kSize" value="720">
-                                    720
-                                </label>
-                                <label class="radio">
-                                    <input type="radio" name="kSize" value="1440">
-                                    1440
-                                </label>
-                            </div>
-                        </div>
-                    </article>
+                    <div class="control">
+                        <label class="label">周期</label>
+                        <label class="radio">
+                            <input type="radio" name="period" value="1min" checked>
+                            1min
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="period" value="5min">
+                            5min
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="period" value="30min">
+                            30min
+                        </label>
+                    </div>
+
+                    <div class="control">
+                        <label class="label">数量</label>
+                        <label class="radio">
+                            <input type="radio" name="kSize" value="20">
+                            20
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="kSize" value="50" checked>
+                            50
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="kSize" value="100">
+                            100
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="kSize" value="240">
+                            240
+                        </label>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="history server" id="iHistoryServer">
+                    </div>
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-link" onclick="setPeriod()">确定</button>
+                    </div>
                 </div>
             </div>
-            <button class="modal-close is-large" aria-label="close" onclick="setPeriod()"></button>
+
+        </div>
+        <div class="column">
+            <div class="">
+                <div id="main" style="height:1000px;"></div>
+            </div>
         </div>
 
-        <!--        <div class="columns">-->
-        <!--            <div class="column">-->
-        <!--                <div class="field">-->
-        <!--                    <label class="label">周期</label>-->
-        <!--                    <div class="control">-->
-        <!--                        <span id="iPeriod"></span>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--            <div class="column">-->
-
-        <!--                <div class="field">-->
-        <!--                    <label class="label">时间</label>-->
-        <!--                    <div class="control">-->
-        <!--                        <span id="iTime"></span>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--            <div class="column">-->
-        <!--                <div class="field">-->
-        <!--                    <label class="label">倒计时</label>-->
-        <!--                    <div class="control">-->
-        <!--                        <span id="iTimeRest"></span>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--            <div class="column">-->
-        <!--                <div class="field">-->
-        <!--                    <label class="label">虚拟量</label>-->
-        <!--                    <div class="control">-->
-        <!--                        <span id="iVol"></span>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </div>-->
-    </div>
-    <div class="container" id="iTime">
-
     </div>
 
 
-    <div id="main" style="height:1000px;"></div>
+    <!--    <div class="container" id="content">-->
+    <!--
+        <div class="container">
+            <div id="modal" class="modal is-active">
+                <div class="modal-background"></div>
+                <div class="modal-content">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-content">
+                                <div class="control">
+                                    周期选择：
+                                    <label class="radio">
+                                        <input type="radio" name="period" value="1min" checked>
+                                        1min
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="period" value="5min">
+                                        5min
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="period" value="30min">
+                                        30min
+                                    </label>
+                                </div>
+
+                                <div class="control">
+                                    K线数量：
+                                    <label class="radio">
+                                        <input type="radio" name="kSize" value="20">
+                                        20
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="kSize" value="50" checked>
+                                        50
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="kSize" value="100">
+                                        100
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="kSize" value="240">
+                                        240
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="kSize" value="480">
+                                        480
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="kSize" value="720">
+                                        720
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="kSize" value="1440">
+                                        1440
+                                    </label>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <button class="modal-close is-large" aria-label="close" onclick="setPeriod()"></button>
+            </div>
+
+        </div>
+    -->
+
 
 </section>
 
 
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 <script type="text/javascript">
-
-    let lastClose = 0;
     // 基于准备好的dom，初始化echarts实例
     let myChart = echarts.init(document.getElementById('main'));
-
-    let colorList = ['#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'];
     let labelFont = 'bold 12px Sans-serif';
 
     function calculateMA(dayCount, data) {
@@ -191,7 +222,6 @@
         }
         return {"up": ups, "mid": mas, "low": lows};
     };
-
     const macd = function (ticks) {
         let ema12 = [], ema26 = [], diffs = [], deas = [], bars = [];
         for (let i = 0; i < ticks.length; i++) {
@@ -212,17 +242,12 @@
         }
         return {diffs: diffs, deas: deas, bars: bars};
     };
-
-
     const ema = function (lastEma, closePrice, units) {
         return (lastEma * (units - 1) + closePrice * 2) / (units + 1);
     };
-
     const dea = function (lastDea, curDiff) {
         return (lastDea * 8 + curDiff * 2) / 10;
     };
-
-
     const bkm = (value) => {
         if (value >= 0 && value < 1000) {
             return value
@@ -234,18 +259,20 @@
     };
 
     //[open, close, lowest, highest] （即：[开盘值, 收盘值, 最低值, 最高值]）
+    let lastClose = 0;
     let dates = [];//["2016-03-29", "2016-03-30", "2016-03-31", "2016-04-01", "2016-04-04", "2016-04-05", "2016-04-06", "2016-04-07", "2016-04-08", "2016-04-11", "2016-04-12", "2016-04-13", "2016-04-14", "2016-04-15", "2016-04-18", "2016-04-19", "2016-04-20", "2016-04-21", "2016-04-22", "2016-04-25", "2016-04-26", "2016-04-27", "2016-04-28", "2016-04-29", "2016-05-02", "2016-05-03", "2016-05-04", "2016-05-05", "2016-05-06", "2016-05-09", "2016-05-10", "2016-05-11", "2016-05-12", "2016-05-13", "2016-05-16", "2016-05-17", "2016-05-18", "2016-05-19", "2016-05-20", "2016-05-23", "2016-05-24", "2016-05-25", "2016-05-26", "2016-05-27", "2016-05-31", "2016-06-01", "2016-06-02", "2016-06-03", "2016-06-06", "2016-06-07", "2016-06-08", "2016-06-09", "2016-06-10", "2016-06-13", "2016-06-14", "2016-06-15", "2016-06-16", "2016-06-17", "2016-06-20", "2016-06-21", "2016-06-22"];
     let dataK = [];//[[17512.58, 17633.11, 17434.27, 17642.81, 86160000], [17652.36, 17716.66, 17652.36, 17790.11, 79330000], [17716.05, 17685.09, 17669.72, 17755.7, 102600000], [17661.74, 17792.75, 17568.02, 17811.48, 104890000], [17799.39, 17737, 17710.67, 17806.38, 85230000], [17718.03, 17603.32, 17579.56, 17718.03, 115230000], [17605.45, 17716.05, 17542.54, 17723.55, 99410000], [17687.28, 17541.96, 17484.23, 17687.28, 90120000], [17555.39, 17576.96, 17528.16, 17694.51, 79990000], [17586.48, 17556.41, 17555.9, 17731.63, 107100000], [17571.34, 17721.25, 17553.57, 17744.43, 81020000], [17741.66, 17908.28, 17741.66, 17918.35, 91710000], [17912.25, 17926.43, 17885.44, 17962.14, 84510000], [17925.95, 17897.46, 17867.41, 17937.65, 118160000], [17890.2, 18004.16, 17848.22, 18009.53, 89390000], [18012.1, 18053.6, 17984.43, 18103.46, 89820000], [18059.49, 18096.27, 18031.21, 18167.63, 100210000], [18092.84, 17982.52, 17963.89, 18107.29, 102720000], [17985.05, 18003.75, 17909.89, 18026.85, 134120000], [17990.94, 17977.24, 17855.55, 17990.94, 83770000], [17987.38, 17990.32, 17934.17, 18043.77, 92570000], [17996.14, 18041.55, 17920.26, 18084.66, 109090000], [18023.88, 17830.76, 17796.55, 18035.73, 100920000], [17813.09, 17773.64, 17651.98, 17814.83, 136670000], [17783.78, 17891.16, 17773.71, 17912.35, 80100000], [17870.75, 17750.91, 17670.88, 17870.75, 97060000], [17735.02, 17651.26, 17609.01, 17738.06, 95020000], [17664.48, 17660.71, 17615.82, 17736.11, 81530000], [17650.3, 17740.63, 17580.38, 17744.54, 80020000], [17743.85, 17705.91, 17668.38, 17783.16, 85590000], [17726.66, 17928.35, 17726.66, 17934.61, 75790000], [17919.03, 17711.12, 17711.05, 17919.03, 87390000], [17711.12, 17720.5, 17625.38, 17798.19, 88560000], [17711.12, 17535.32, 17512.48, 17734.74, 86640000], [17531.76, 17710.71, 17531.76, 17755.8, 88440000], [17701.46, 17529.98, 17469.92, 17701.46, 103260000], [17501.28, 17526.62, 17418.21, 17636.22, 79120000], [17514.16, 17435.4, 17331.07, 17514.16, 95530000], [17437.32, 17500.94, 17437.32, 17571.75, 111990000], [17507.04, 17492.93, 17480.05, 17550.7, 87790000], [17525.19, 17706.05, 17525.19, 17742.59, 86480000], [17735.09, 17851.51, 17735.09, 17891.71, 79180000], [17859.52, 17828.29, 17803.82, 17888.66, 68940000], [17826.85, 17873.22, 17824.73, 17873.22, 73190000], [17891.5, 17787.2, 17724.03, 17899.24, 147390000], [17754.55, 17789.67, 17664.79, 17809.18, 78530000], [17789.05, 17838.56, 17703.55, 17838.56, 75560000], [17799.8, 17807.06, 17689.68, 17833.17, 82270000], [17825.69, 17920.33, 17822.81, 17949.68, 71870000], [17936.22, 17938.28, 17936.22, 18003.23, 78750000], [17931.91, 18005.05, 17931.91, 18016, 71260000], [17969.98, 17985.19, 17915.88, 18005.22, 69690000], [17938.82, 17865.34, 17812.34, 17938.82, 90540000], [17830.5, 17732.48, 17731.35, 17893.28, 101690000], [17710.77, 17674.82, 17595.79, 17733.92, 93740000], [17703.65, 17640.17, 17629.01, 17762.96, 94130000], [17602.23, 17733.1, 17471.29, 17754.91, 91950000], [17733.44, 17675.16, 17602.78, 17733.44, 248680000], [17736.87, 17804.87, 17736.87, 17946.36, 99380000], [17827.33, 17829.73, 17799.8, 17877.84, 85130000], [17832.67, 17780.83, 17770.36, 17920.16, 89440000]];
+    let priceClose = [];
 
     let volumesBuy = [];//[143050, 0, 47326, 152548, 100660, 32466, 0, 4322, 46648, 41742, 47396, 26136, 94354, 76932, 53270, 40786, 17370, 56968, 0, 0, 0, 0, 109670, 73426, 78790, 63704, 92978, 28094, 28204, 67910, 36274, 41358, 111246, 30426, 214916, 168946, 137274, 60428, 45596, 44474, 22876, 240782, 111448, 199688, 181994, 239876, 208088, 83926, 51286, 153904, 0];
-    let volumesSell = [];//[143050, 0, 47326, 152548, 100660, 32466, 0, 4322, 46648, 41742, 47396, 26136, 94354, 76932, 53270, 40786, 17370, 56968, 0, 0, 0, 0, 109670, 73426, 78790, 63704, 92978, 28094, 28204, 67910, 36274, 41358, 111246, 30426, 214916, 168946, 137274, 60428, 45596, 44474, 22876, 240782, 111448, 199688, 181994, 239876, 208088, 83926, 51286, 153904, 0];
-    let volAll = [];//[143050, 0, 47326, 152548, 100660, 32466, 0, 4322, 46648, 41742, 47396, 26136, 94354, 76932, 53270, 40786, 17370, 56968, 0, 0, 0, 0, 109670, 73426, 78790, 63704, 92978, 28094, 28204, 67910, 36274, 41358, 111246, 30426, 214916, 168946, 137274, 60428, 45596, 44474, 22876, 240782, 111448, 199688, 181994, 239876, 208088, 83926, 51286, 153904, 0];
+    let volumesSell = [];
+    let volAll = [];
 
-    let volNB = [];//[143050, 0, 47326, 152548, 100660, 32466, 0, 4322, 46648, 41742, 47396, 26136, 94354, 76932, 53270, 40786, 17370, 56968, 0, 0, 0, 0, 109670, 73426, 78790, 63704, 92978, 28094, 28204, 67910, 36274, 41358, 111246, 30426, 214916, 168946, 137274, 60428, 45596, 44474, 22876, 240782, 111448, 199688, 181994, 239876, 208088, 83926, 51286, 153904, 0];
-    let volNS = [];//[143050, 0, 47326, 152548, 100660, 32466, 0, 4322, 46648, 41742, 47396, 26136, 94354, 76932, 53270, 40786, 17370, 56968, 0, 0, 0, 0, 109670, 73426, 78790, 63704, 92978, 28094, 28204, 67910, 36274, 41358, 111246, 30426, 214916, 168946, 137274, 60428, 45596, 44474, 22876, 240782, 111448, 199688, 181994, 239876, 208088, 83926, 51286, 153904, 0];
+    let volNB = [];
+    let volNS = [];
 
-    let volumesCqBuy = [];//[143050, 0, 47326, 152548, 100660, 32466, 0, 4322, 46648, 41742, 47396, 26136, 94354, 76932, 53270, 40786, 17370, 56968, 0, 0, 0, 0, 109670, 73426, 78790, 63704, 92978, 28094, 28204, 67910, 36274, 41358, 111246, 30426, 214916, 168946, 137274, 60428, 45596, 44474, 22876, 240782, 111448, 199688, 181994, 239876, 208088, 83926, 51286, 153904, 0];
-    let volumesCqSell = [];//[143050, 0, 47326, 152548, 100660, 32466, 0, 4322, 46648, 41742, 47396, 26136, 94354, 76932, 53270, 40786, 17370, 56968, 0, 0, 0, 0, 109670, 73426, 78790, 63704, 92978, 28094, 28204, 67910, 36274, 41358, 111246, 30426, 214916, 168946, 137274, 60428, 45596, 44474, 22876, 240782, 111448, 199688, 181994, 239876, 208088, 83926, 51286, 153904, 0];
+    let volumesCqBuy = [];
+    let volumesCqSell = [];
 
     // let dataMA5 = [];//calculateMA(5, dataK);
     // let dataMA10 = [];//calculateMA(10, dataK);
@@ -257,6 +284,432 @@
     let bollMID = [];
     let bollLOW = [];
 
+    const DATA_TYPE = {
+        r: "r",
+        k: "k",
+        init: "init",
+    };
+    const SAFE_COLOR = {
+        red: '#CC3300',
+        green: '#009933',
+        grey: '#BBBBBB',
+        blue: '#3333CC',
+        yellow: '#FF9900',
+        black: '#222222'
+    };
+
+
+    const HOST = "duokong.info";
+    const initWS = () => {
+        const wsUrl = "ws://" + HOST + ":10001";//localhost 根据实际情况替换成 响应的ip 或者域名
+        let ws = new ReconnectingWebSocket(wsUrl);
+
+        ws.onopen = function (evt) {
+            notify('连接成功')
+        };
+
+        ws.onmessage = function (evt) {
+            try {
+                let msgObj = JSON.parse(evt.data);
+                console.log("msgObj", msgObj);
+                updateList(msgObj);
+
+            } catch (e) {
+                console.error("evt", evt);
+            }
+        };
+
+        ws.onclose = function (evt) {
+            notify('连接断开, 重新连接...')
+        };
+    };
+
+    function notify(text) {
+        let div = document.createElement('div');
+        div.setAttribute("class", "notification");
+        div.innerText = text;
+
+        let notify = qs("#notification");
+        notify.append(div);
+
+        let sid = setInterval(function () {
+            notify.removeChild(div);
+            clearInterval(sid);
+        }, 2000)
+    }
+
+
+    /*初始化数据*/
+    option = {
+        animation: true,
+        legend: {
+            top: 30,
+            data: ['日K', 'up', 'mid', 'low']
+        },
+
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                animation: false,
+                type: 'cross',
+                lineStyle: {
+                    color: SAFE_COLOR.blue,
+                    width: 2,
+                    opacity: 0.5
+                },
+            },
+            position: function (pos, params, el, elRect, size) {
+                let obj = {
+                    top: 60
+                };
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
+                return obj;
+            }
+        },
+        axisPointer: {
+            link: [{
+                xAxisIndex: [0, 1, 2, 3]
+            }]
+        },
+        dataZoom: [{
+            type: 'slider',
+            xAxisIndex: [0, 1, 2, 3],
+            realtime: true,
+            // start: 50,
+            // end: 100,
+            top: 65,
+            height: 20,
+            handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+            handleSize: '100%'
+        }, {
+            type: 'inside',
+            xAxisIndex: [0, 1, 2, 3],
+            top: 30,
+            height: 20
+        }],
+        xAxis: [{
+            type: 'category',
+            data: dates,
+            boundaryGap: true,
+            axisLabel: {
+                formatter: function (value) {
+                    return echarts.format.formatTime('hh:mm', value);
+                }
+            },
+            min: 'dataMin',
+            max: 'dataMax',
+            axisPointer: {
+                show: true
+            }
+        }, {
+            type: 'category',
+            gridIndex: 1,
+            data: dates,
+            scale: true,
+            boundaryGap: true,
+            splitLine: {show: false},
+            axisLabel: {show: false},
+            axisTick: {show: false},
+            axisLine: {lineStyle: {color: SAFE_COLOR.grey}},
+            splitNumber: 20,
+            min: 'dataMin',
+            max: 'dataMax',
+        }, {
+            type: 'category',
+            gridIndex: 2,
+            data: dates,
+            scale: true,
+            boundaryGap: true,
+            splitLine: {show: true},
+            axisLabel: {show: true},
+            axisTick: {show: true},
+            axisLine: {lineStyle: {color: SAFE_COLOR.grey}},
+            splitNumber: 20,
+            min: 'dataMin',
+            max: 'dataMax',
+        }, {
+            type: 'category',
+            gridIndex: 3,
+            data: dates,
+            scale: true,
+            boundaryGap: true,
+            splitLine: {show: true},
+            axisLabel: {show: true},
+            axisTick: {show: true},
+            axisLine: {lineStyle: {color: SAFE_COLOR.grey}},
+            splitNumber: 20,
+            min: 'dataMin',
+            max: 'dataMax',
+        }],
+        yAxis: [{
+            scale: false,//min max 存在是 scale 无效
+            max: 'dataMax',
+            min: 'dataMin',
+            interval: 100,
+            splitNumber: 1,
+            axisLine: {lineStyle: {color: SAFE_COLOR.grey}},
+            splitLine: {show: true},
+            axisTick: {show: true},
+            axisLabel: {
+                inside: true,
+                formatter: function (value, index) {
+                    return Math.round(value)
+                }
+            },
+            minorSplitLine: {
+                show: true
+            },
+            minorTick: {
+                show: true,
+                splitNumber: 2,
+            }
+        }, {
+            scale: true,
+            gridIndex: 1,
+            splitNumber: 2,
+            axisLabel: {
+                inside: true,
+                show: true,
+                // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
+                formatter: function (value, index) {
+                    return bkm(value);
+                }
+            },
+            axisLine: {show: true},
+            axisTick: {show: true},
+            splitLine: {show: true},
+        }, {
+            scale: true,
+            gridIndex: 2,
+            splitNumber: 2,
+            axisLabel: {
+                inside: true,
+                show: true,
+                // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
+                formatter: function (value, index) {
+                    return bkm(value);
+                }
+            },
+            axisLine: {show: true},
+            axisTick: {show: true},
+            splitLine: {show: true}
+        }, {
+            scale: true,
+            gridIndex: 3,
+            splitNumber: 2,
+            axisLabel: {
+                inside: true,
+                show: true,
+                // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
+                formatter: function (value, index) {
+                    return bkm(value);
+                }
+            },
+            axisLine: {show: true},
+            axisTick: {show: true},
+            splitLine: {show: true}
+        }],
+        grid: [{
+            top: 110,
+            height: 200
+        }, {
+            height: 150,
+            top: 350
+        }, {
+            height: 150,
+            top: 520
+        }, {
+            height: 150,
+            top: 690
+        }],
+
+        graphic: [{
+            type: 'group',
+            left: 'center',
+            top: 70,
+            width: 300,
+            bounding: 'raw',
+            children: [{
+                id: 'up',
+                type: 'text',
+                style: {fill: SAFE_COLOR.yellow, font: labelFont},
+                left: 0
+            }, {
+                id: 'mid',
+                type: 'text',
+                style: {fill: SAFE_COLOR.black, font: labelFont},
+                left: 'center'
+            }, {
+                id: 'low',
+                type: 'text',
+                style: {fill: SAFE_COLOR.blue, font: labelFont},
+                right: 0
+            }]
+        }],
+        series: [
+            {
+                name: 'macd',
+                type: "line",
+                smooth: true,
+                xAxisIndex: 2,
+                yAxisIndex: 2,
+                data: diff
+            },
+            {
+                name: 'CQ_buy',
+                type: 'bar',
+                xAxisIndex: 3,
+                yAxisIndex: 3,
+                itemStyle: {
+                    color: SAFE_COLOR.red
+                },
+                stack: 'CQ',
+                data: volumesCqBuy
+            },
+            {
+                name: 'CQ_sell',
+                type: 'bar',
+                xAxisIndex: 3,
+                yAxisIndex: 3,
+                itemStyle: {
+                    color: SAFE_COLOR.green
+                },
+                stack: 'CQ',
+                data: volumesCqSell
+            }, {
+                name: 'VOL_buy',
+                type: 'bar',
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                itemStyle: {
+                    color: SAFE_COLOR.red
+                },
+                stack: 'vol',
+                data: volNB
+            },
+            {
+                name: 'VOL_sell',
+                type: 'bar',
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                itemStyle: {
+                    color: SAFE_COLOR.green
+                },
+                stack: 'vol',
+                data: volNS
+            }, {
+                name: 'VOL_All',
+                type: 'bar',
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                itemStyle: {
+                    color: SAFE_COLOR.grey
+                },
+                stack: 'vol',
+                data: volAll
+            }, {
+                type: 'candlestick',
+                name: '日K',
+                data: dataK,
+                itemStyle: {
+                    color: SAFE_COLOR.red,
+                    color0: SAFE_COLOR.green,
+                    borderColor: SAFE_COLOR.red,
+                    borderColor0: SAFE_COLOR.green
+                },
+                markLine: {
+                    symbol: "none",
+                    lineStyle: {
+                        color: SAFE_COLOR.red
+                    },
+                    data: [
+                        {
+                            name: '最新价',
+                            yAxis: lastClose
+                        }
+                    ]
+                },
+            },
+            {
+                name: 'up',
+                type: 'line',
+                // data: dataMA5,
+                data: bollUP,
+                smooth: true,
+                showSymbol: false,
+                lineStyle: {
+                    width: 1,
+                    color: SAFE_COLOR.yellow
+                }
+            }, {
+                name: 'mid',
+                type: 'line',
+                // data: dataMA10,
+                data: bollMID,
+                smooth: true,
+                showSymbol: false,
+                lineStyle: {
+                    width: 1,
+                    color: SAFE_COLOR.black
+                }
+            }, {
+                name: 'low',
+                type: 'line',
+                // data: dataMA20,
+                data: bollLOW,
+                smooth: true,
+                showSymbol: false,
+                lineStyle: {
+                    width: 1,
+                    color: SAFE_COLOR.blue
+                }
+            }]
+    };
+    myChart.setOption(option);
+    initWS();
+    setInterval(() => {
+        let date = new Date();
+        let seconds = date.getSeconds();
+        qs('.progress').value = seconds * 100 / 60;
+        qs("#iTime").innerText = date.toLocaleString();
+    }, 500);
+
+
+    /*更新周期*/
+    const setPeriod = () => {
+        clearData();
+        let period = qs("input[name='period']:checked").value;
+        let kSize = qs("input[name='kSize']:checked").value;
+        let historyService = qs("#iHistoryServer").value ? qs("#iHistoryServer").value : HOST;
+        //数据初始化
+        let url = "http://" + historyService + ":9001/init?period=" + period + "&size=" + kSize;
+        console.log('url',url);
+        get(url, {}, (json) => {
+            updateList(json.data);
+        });
+    };
+    const clearData = () => {
+        dates = [];
+        dataK = [];
+        priceClose = [];
+        lastClose = 0;
+
+        volumesBuy = [];
+        volumesSell = [];
+        volAll = [];
+
+        volNB = [];
+        volNS = [];
+
+        volumesCqBuy = [];
+        volumesCqSell = [];
+
+        diff = [];
+        bollUP = [];
+        bollMID = [];
+        bollLOW = [];
+        updateOption();
+    }
     const updateList = (obj) => {
         /**
          * 实时最新数据
@@ -281,11 +734,13 @@
             k.push(low);
             k.push(high);
             dataK[index] = k;
+            priceClose[index] = close;
 
-            if (close - lastClose > 0) {
-                qs('title').innerText = "⏫ " + close;
+            let d = close - lastClose;
+            if (d > 0) {
+                qs('title').innerText = "🔥 【" + Math.round(d) + "】" + close;
             } else {
-                qs('title').innerText = "⏬ " + close;
+                qs('title').innerText = "❄️ 【" + Math.round(d) + "】" + close;
             }
             lastClose = close;
         }
@@ -294,6 +749,7 @@
          */
         if (DATA_TYPE.k === obj.dataType) {
             const {next, qpSell, buy, sell, nb, ns, qpBuy, dataK: kline} = obj;
+            //新周期
             dates.push(next);
             volumesBuy.push(0);
             volumesSell.push(0);
@@ -303,7 +759,9 @@
             volumesCqBuy.push(0);
             volumesCqSell.push(0);
             dataK.push([]);
+            priceClose.push(0);
 
+            //更新
             let index = dates.length - 2;
             volumesBuy[index] = buy[0];
             volumesSell[index] = sell[0];
@@ -319,6 +777,7 @@
             k.push(close);
             k.push(low);
             k.push(high);
+            priceClose[index] = close;
             dataK[index] = k;
         }
         /**
@@ -346,18 +805,19 @@
                 k.push(low);
                 k.push(high);
                 dataK.push(k);
+                priceClose.push(close);
             }
 
             dates.push(next);
             volumesBuy.push(0);
             volumesSell.push(0);
             volAll.push(0);
-
             volNB.push(0);
             volNS.push(0);
             volumesCqBuy.push(0);
             volumesCqSell.push(0);
             dataK.push([]);
+            priceClose.push(0);
         }
 
         // dataMA5 = calculateMA(5, dataK);
@@ -379,268 +839,9 @@
         diff = diffs;
         updateOption();
     };
-
-    const DATA_TYPE = {
-        r: "r",
-        k: "k",
-        init: "init",
-    };
-
-
-    // const DOMAIN = '127.0.0.1';
-    const DOMAIN = 'dongzhihu.com';
-
-    const initWS = () => {
-        const wsUrl = "ws://" + DOMAIN + ":10001";//localhost 根据实际情况替换成 响应的ip 或者域名
-        let ws = new ReconnectingWebSocket(wsUrl);
-
-        ws.onopen = function (evt) {
-            notify('连接成功')
-        };
-
-        ws.onmessage = function (evt) {
-            try {
-                let msgObj = JSON.parse(evt.data);
-                console.log("msgObj", msgObj);
-                updateList(msgObj);
-
-            } catch (e) {
-                console.error("evt", evt);
-            }
-        };
-
-        ws.onclose = function (evt) {
-            notify('连接断开, 重新连接...')
-        };
-    };
-
-
-    function notify(text) {
-        let div = document.createElement('div');
-        div.setAttribute("class", "notification");
-        div.innerText = text;
-
-        let content = qs("#notification");
-        content.append(div);
-
-        let sid = setInterval(function () {
-            content.removeChild(div);
-            clearInterval(sid);
-        }, 2000)
-    }
-
-
     const updateOption = () => {
-        let option = {
-            animation: false,
-            color: colorList,
-            title: {
-                // left: 'center',
-                // text: '移动端'
-            },
-            legend: {
-                top: 30,
-                data: ['日K', 'up', 'mid', 'low']
-            },
-
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    animation: false,
-                    type: 'cross',
-                    lineStyle: {
-                        color: '#376df4',
-                        width: 2,
-                        opacity: 0.5
-                    },
-                },
-                position: function (pos, params, el, elRect, size) {
-                    let obj = {
-                        top: 60
-                    };
-                    obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
-                    return obj;
-                }
-            },
-            axisPointer: {
-                link: [{
-                    xAxisIndex: [0, 1, 2,3]
-                }]
-            },
-            dataZoom: [{
-                type: 'slider',
-                xAxisIndex: [0, 1, 2,3],
-                realtime: true,
-                // start: 50,
-                // end: 100,
-                top: 65,
-                height: 20,
-                handleIcon: 'M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-                handleSize: '100%'
-            }, {
-                type: 'inside',
-                xAxisIndex: [0, 1, 2,3],
-                top: 30,
-                height: 20
-            }],
-            xAxis: [{
-                type: 'category',
-                data: dates,
-                boundaryGap: true,
-                axisLabel: {
-                    formatter: function (value) {
-                        return echarts.format.formatTime('hh:mm', value);
-                    }
-                },
-                min: 'dataMin',
-                max: 'dataMax',
-                axisPointer: {
-                    show: true
-                }
-            }, {
-                type: 'category',
-                gridIndex: 1,
-                data: dates,
-                scale: true,
-                boundaryGap: true,
-                splitLine: {show: false},
-                axisLabel: {show: false},
-                axisTick: {show: false},
-                axisLine: {lineStyle: {color: '#777'}},
-                splitNumber: 20,
-                min: 'dataMin',
-                max: 'dataMax',
-            }, {
-                type: 'category',
-                gridIndex: 2,
-                data: dates,
-                scale: true,
-                boundaryGap: true,
-                splitLine: {show: true},
-                axisLabel: {show: true},
-                axisTick: {show: true},
-                axisLine: {lineStyle: {color: '#777'}},
-                splitNumber: 20,
-                min: 'dataMin',
-                max: 'dataMax',
-            }, {
-                type: 'category',
-                gridIndex: 3,
-                data: dates,
-                scale: true,
-                boundaryGap: true,
-                splitLine: {show: true},
-                axisLabel: {show: true},
-                axisTick: {show: true},
-                axisLine: {lineStyle: {color: '#777'}},
-                splitNumber: 20,
-                min: 'dataMin',
-                max: 'dataMax',
-            }],
-            yAxis: [{
-                scale: false,//min max 存在是 scale 无效
-                max: 'dataMax',
-                min: 'dataMin',
-                interval: 100,
-                splitNumber: 1,
-                axisLine: {lineStyle: {color: '#777'}},
-                splitLine: {show: true},
-                axisTick: {show: true},
-                axisLabel: {
-                    inside: true,
-                    formatter: function (value, index) {
-                        return Math.round(value)
-                    }
-                },
-                minorSplitLine: {
-                    show: true
-                },
-                minorTick: {
-                    show: true,
-                    splitNumber: 2,
-                }
-            }, {
-                scale: true,
-                gridIndex: 1,
-                splitNumber: 2,
-                axisLabel: {
-                    inside: true,
-                    show: true,
-                    // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
-                    formatter: function (value, index) {
-                        return bkm(value);
-                    }
-                },
-                axisLine: {show: true},
-                axisTick: {show: true},
-                splitLine: {show: true},
-            }, {
-                scale: true,
-                gridIndex: 2,
-                splitNumber: 2,
-                axisLabel: {
-                    inside: true,
-                    show: true,
-                    // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
-                    formatter: function (value, index) {
-                        return bkm(value);
-                    }
-                },
-                axisLine: {show: true},
-                axisTick: {show: true},
-                splitLine: {show: true}
-            }, {
-                scale: true,
-                gridIndex: 3,
-                splitNumber: 2,
-                axisLabel: {
-                    inside: true,
-                    show: true,
-                    // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
-                    formatter: function (value, index) {
-                        return bkm(value);
-                    }
-                },
-                axisLine: {show: true},
-                axisTick: {show: true},
-                splitLine: {show: true}
-            }],
-            grid: [{
-                top: 110,
-                height: 200
-            }, {
-                height: 150,
-                top: 350
-            }, {
-                height: 150,
-                top: 520
-            }, {
-                height: 150,
-                top: 690
-            }],
-            graphic: [{
-                type: 'group',
-                left: 'center',
-                top: 70,
-                width: 300,
-                bounding: 'raw',
-                children: [{
-                    id: 'up',
-                    type: 'text',
-                    style: {fill: colorList[1], font: labelFont},
-                    left: 0
-                }, {
-                    id: 'mid',
-                    type: 'text',
-                    style: {fill: colorList[2], font: labelFont},
-                    left: 'center'
-                }, {
-                    id: 'low',
-                    type: 'text',
-                    style: {fill: colorList[3], font: labelFont},
-                    right: 0
-                }]
-            }],
+        let opt = {
+            ...option,
             series: [
                 {
                     name: 'macd',
@@ -656,7 +857,7 @@
                     xAxisIndex: 3,
                     yAxisIndex: 3,
                     itemStyle: {
-                        color: '#ef232a'
+                        color: SAFE_COLOR.red
                     },
                     stack: 'CQ',
                     data: volumesCqBuy
@@ -667,7 +868,7 @@
                     xAxisIndex: 3,
                     yAxisIndex: 3,
                     itemStyle: {
-                        color: '#7fbe9e'
+                        color: SAFE_COLOR.green
                     },
                     stack: 'CQ',
                     data: volumesCqSell
@@ -677,7 +878,7 @@
                     xAxisIndex: 1,
                     yAxisIndex: 1,
                     itemStyle: {
-                        color: '#ef232a'
+                        color: SAFE_COLOR.red
                     },
                     stack: 'vol',
                     data: volNB
@@ -688,7 +889,7 @@
                     xAxisIndex: 1,
                     yAxisIndex: 1,
                     itemStyle: {
-                        color: '#7fbe9e'
+                        color: SAFE_COLOR.green
                     },
                     stack: 'vol',
                     data: volNS
@@ -698,7 +899,7 @@
                     xAxisIndex: 1,
                     yAxisIndex: 1,
                     itemStyle: {
-                        color: '#777'
+                        color: SAFE_COLOR.grey
                     },
                     stack: 'vol',
                     data: volAll
@@ -707,12 +908,25 @@
                     name: '日K',
                     data: dataK,
                     itemStyle: {
-                        color: '#ef232a',
-                        color0: '#14b143',
-                        borderColor: '#ef232a',
-                        borderColor0: '#14b143'
+                        color: SAFE_COLOR.red,
+                        color0: SAFE_COLOR.green,
+                        borderColor: SAFE_COLOR.red,
+                        borderColor0: SAFE_COLOR.green
                     },
-                }, {
+                    markLine: {
+                        symbol: "none",
+                        lineStyle: {
+                            color: SAFE_COLOR.red
+                        },
+                        data: [
+                            {
+                                name: '最新价',
+                                yAxis: lastClose
+                            }
+                        ]
+                    },
+                },
+                {
                     name: 'up',
                     type: 'line',
                     // data: dataMA5,
@@ -720,7 +934,8 @@
                     smooth: true,
                     showSymbol: false,
                     lineStyle: {
-                        width: 1
+                        width: 1,
+                        color: SAFE_COLOR.yellow
                     }
                 }, {
                     name: 'mid',
@@ -730,7 +945,8 @@
                     smooth: true,
                     showSymbol: false,
                     lineStyle: {
-                        width: 1
+                        width: 1,
+                        color: SAFE_COLOR.black
                     }
                 }, {
                     name: 'low',
@@ -740,35 +956,15 @@
                     smooth: true,
                     showSymbol: false,
                     lineStyle: {
-                        width: 1
+                        width: 1,
+                        color: SAFE_COLOR.blue
                     }
                 }]
         };
 
         // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
+        myChart.setOption(opt);
     };
-
-    const setPeriod = () => {
-        qs('.modal').setAttribute("class", "modal");
-        qs('.modal-close').setAttribute("class", "modal");
-
-        let period = qs("input[name='period']:checked").value;
-        let kSize = qs("input[name='kSize']:checked").value;
-        console.log('周期' + period + '数量' + kSize);
-        //数据初始化
-        let url = "http://" + "dongzhihu.com" + ":9001/init?period=" + period + "&size=" + kSize;
-        get(url, {}, (json) => {
-            console.log(json);
-            updateList(json.data);
-            initWS();
-        });
-    }
-
-
-    setInterval(() => {
-        qs("#iTime").innerText = new Date().toLocaleString();
-    }, 500)
 
 </script>
 </body>
