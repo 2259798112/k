@@ -95,7 +95,7 @@
         </div>
         <div class="column">
             <div class="">
-                <div id="main" style="height:1000px;"></div>
+                <div id="main" style="height:900px;"></div>
             </div>
         </div>
 
@@ -341,7 +341,7 @@
 
     /*初始化数据*/
     option = {
-        animation: true,
+        // animation: true,
         legend: {
             top: 30,
             data: ['日K', 'up', 'mid', 'low']
@@ -354,15 +354,17 @@
                 type: 'cross',
                 lineStyle: {
                     color: SAFE_COLOR.blue,
-                    width: 2,
+                    width: 1,
                     opacity: 0.5
                 },
             },
             position: function (pos, params, el, elRect, size) {
                 let obj = {
-                    top: 60
+                    top: 60,
+                    left:-100,
+                    width:100
                 };
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
+                // obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
                 return obj;
             }
         },
@@ -487,7 +489,7 @@
                 show: true,
                 // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
                 formatter: function (value, index) {
-                    return bkm(value);
+                    return Math.round(value)
                 }
             },
             axisLine: {show: true},
@@ -842,6 +844,60 @@
     const updateOption = () => {
         let opt = {
             ...option,
+            xAxis: [{
+                type: 'category',
+                data: dates,
+                boundaryGap: true,
+                axisLabel: {
+                    formatter: function (value) {
+                        return echarts.format.formatTime('hh:mm', value);
+                    }
+                },
+                min: 'dataMin',
+                max: 'dataMax',
+                axisPointer: {
+                    show: true
+                }
+            }, {
+                type: 'category',
+                gridIndex: 1,
+                data: dates,
+                scale: true,
+                boundaryGap: true,
+                splitLine: {show: false},
+                axisLabel: {show: false},
+                axisTick: {show: false},
+                axisLine: {lineStyle: {color: SAFE_COLOR.grey}},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax',
+            }, {
+                type: 'category',
+                gridIndex: 2,
+                data: dates,
+                scale: true,
+                boundaryGap: true,
+                splitLine: {show: true},
+                axisLabel: {show: true},
+                axisTick: {show: true},
+                axisLine: {lineStyle: {color: SAFE_COLOR.grey}},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax',
+            }, {
+                type: 'category',
+                gridIndex: 3,
+                data: dates,
+                scale: true,
+                boundaryGap: true,
+                splitLine: {show: true},
+                axisLabel: {show: true},
+                axisTick: {show: true},
+                axisLine: {lineStyle: {color: SAFE_COLOR.grey}},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax',
+            }],
             series: [
                 {
                     name: 'macd',
