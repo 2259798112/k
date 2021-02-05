@@ -364,9 +364,10 @@
                 console.log('formatter', JSON.stringify(value));
 
                 let html = '';
-                let k = "开收低高"
+                let k = value[0].value;
+                html += "开: " + Math.round(k[1]) + "收: " + Math.round(k[2]) + "低: " + Math.round(k[3]) + "高: " + Math.round(k[4]) + "<br>";
 
-                for (let i = 0; i < value.length; i++) {
+                for (let i = 1; i < value.length; i++) {
                     let item = value[i];
                     html += item.seriesName + ":" + JSON.stringify(item.value) + "<br>"
                 }
