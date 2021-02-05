@@ -350,6 +350,7 @@
         tooltip: {
             trigger: 'axis',
             axisPointer: {
+
                 animation: false,
                 type: 'cross',
                 lineStyle: {
@@ -358,15 +359,31 @@
                     opacity: 0.5
                 },
             },
-            position: function (pos, params, el, elRect, size) {
-                let obj = {
-                    top: 60,
-                    left:-100,
-                    width:100
-                };
-                // obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
-                return obj;
-            }
+
+            formatter: function (value) {
+                console.log('formatter', JSON.stringify(value));
+
+                let html = '';
+                let k = "开收低高"
+
+                for (let i = 0; i < value.length; i++) {
+                    let item = value[i];
+                    html += item.seriesName + ":" + JSON.stringify(item.value) + "<br>"
+                }
+
+                return html
+
+            },
+            position: [10, 10],
+            // position: function (pos, params, el, elRect, size) {
+            //     let obj = {
+            //         top: 60,
+            //         left:-100,
+            //         width:100
+            //     };
+            //     // obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
+            //     return obj;
+            // }
         },
         axisPointer: {
             link: [{
@@ -685,7 +702,7 @@
         let historyService = qs("#iHistoryServer").value ? qs("#iHistoryServer").value : HOST;
         //数据初始化
         let url = "http://" + historyService + ":9001/init?period=" + period + "&size=" + kSize;
-        console.log('url',url);
+        console.log('url', url);
         get(url, {}, (json) => {
             updateList(json.data);
         });
