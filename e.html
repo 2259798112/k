@@ -360,31 +360,47 @@
                 },
             },
 
-            formatter: function (value) {
-                console.log('formatter', JSON.stringify(value));
+            /*
+            开: 39370收: 39394低: 39370高: 39395<br>
 
-                let html = '';
+            up:"-"<br>mid:"-"<br>low:"-"<br>
+
+            VOL_buy:21824<br>VOL_sell:0<br>VOL_All:24680<br>macd:-4.313505883292237<br>CQ_buy:0<br>CQ_sell:0<br>
+             */
+            formatter: function (value) {
+
+                let obj = {};
+
+                let html = '<div>';
+                html += '<pre>'
                 let k = value[0].value;
-                html += "开: " + Math.round(k[1]) + "收: " + Math.round(k[2]) + "低: " + Math.round(k[3]) + "高: " + Math.round(k[4]) + "<br>";
+                html += "开：" + Math.round(k[1]) + " 收：" + Math.round(k[2]) + " 低：" + Math.round(k[3]) + " 高：" + Math.round(k[4]) + "\n";
 
                 for (let i = 1; i < value.length; i++) {
                     let item = value[i];
-                    html += item.seriesName + ":" + JSON.stringify(item.value) + "<br>"
+                    obj[item.seriesName] = Math.round(item.value);
                 }
 
+                console.log(obj)
+
+
+                html += '上：' + obj.up
+                    + ' 中：' + (obj.mid)
+                    + ' 下：' + (obj.low)
+                    + ' <span style="color:#CC3300;">差：' + (obj.macd) + '</span>\n';
+                html += '总：' + (bkm(obj.VOL_All + obj.VOL_buy + obj.VOL_sell))
+                    + ' 买：' + bkm(obj.VOL_buy)
+                    + ' 卖：' + bkm(obj.VOL_sell)
+                    + ' 多：' + bkm(obj.CQ_buy)
+                    + ' 空：' + bkm(obj.CQ_sell);
+                html += '</pre>';
+                html += '</div>';
+
+                console.log('html', html);
                 return html
 
             },
-            position: [10, 10],
-            // position: function (pos, params, el, elRect, size) {
-            //     let obj = {
-            //         top: 60,
-            //         left:-100,
-            //         width:100
-            //     };
-            //     // obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
-            //     return obj;
-            // }
+            position: [10, 0],
         },
         axisPointer: {
             link: [{
