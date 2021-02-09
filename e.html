@@ -40,7 +40,7 @@
                 <div class="field">
                     <div class="control">
                         <label id="iTime"> </label>
-<!--                        <progress class="progress is-success" value="0" max="100">时间进度</progress>-->
+                        <!--                        <progress class="progress is-success" value="0" max="100">时间进度</progress>-->
                     </div>
 
                     <div class="control">
@@ -102,10 +102,49 @@
                     </div>
                 </div>
             </div>
+            <HR>
+            <div class="" id="tips">
+                <h1 class="title">突破(惯性加速)</h1>
+                <div class="control">
+                    <P class="tag is-danger"> 收敛 </P>
+                    放量突破
+                </div>
+                <div class="control">
+                    <P class="tag is-danger"> 旗形 </P>
+                    2踩缩量不破位
+                </div>
+                <div class="control">
+                    <P class="tag is-warning"> 震荡 </P>
+                    调整破位3高2低收敛
+                </div>
+                <hr>
 
+                <h1 class="title">翻转(惯性消失)</h1>
+                <div class="control">
+                    <P class="tag is-danger"> 1/ VOL 背离 </P>
+                </div>
+                <div class="control">
+                    <P class="tag is-warning"> 2/ DIF 背离 </P>
+                </div>
+                <div class="control">
+                    <P class="tag is-danger"> 3/ UP-DN 下降 </P>
+                </div>
+                <div class="control">
+                    <P class="tag is-warning"> 4/ 二爆缩量 </P>
+                </div>
+                <hr>
+                <h1 class="title">性价比</h1>
+                <div class="control">
+                    <P class="tag is-success"> 止盈 </P>
+                </div>
+                <div class="control">
+                    <P class="tag is-danger"> 止损 </P>
+                </div>
+
+            </div>
         </div>
         <div class="column">
-                <div id="main" style="height:850px;"></div>
+            <div id="main" style="height:1000px;"></div>
             <progress class="progress is-success" value="0" max="100">时间进度</progress>
 
         </div>
@@ -294,6 +333,7 @@
     let bollUP = [];
     let bollMID = [];
     let bollLOW = [];
+    let upDN = [];
 
     const DATA_TYPE = {
         r: "r",
@@ -415,12 +455,12 @@
         },
         axisPointer: {
             link: [{
-                xAxisIndex: [0, 1, 2, 3]
+                xAxisIndex: [0, 1, 2, 3, 4]
             }]
         },
         dataZoom: [{
             type: 'slider',
-            xAxisIndex: [0, 1, 2, 3],
+            xAxisIndex: [0, 1, 2, 3, 4],
             realtime: true,
             // start: 50,
             // end: 100,
@@ -430,7 +470,7 @@
             handleSize: '100%'
         }, {
             type: 'inside',
-            xAxisIndex: [0, 1, 2, 3],
+            xAxisIndex: [0, 1, 2, 3, 4],
             top: 30,
             height: 20
         }],
@@ -477,6 +517,19 @@
         }, {
             type: 'category',
             gridIndex: 3,
+            data: dates,
+            scale: true,
+            boundaryGap: true,
+            splitLine: {show: true},
+            axisLabel: {show: true},
+            axisTick: {show: true},
+            axisLine: {lineStyle: {color: SAFE_COLOR.grey}},
+            splitNumber: 20,
+            min: 'dataMin',
+            max: 'dataMax',
+        }, {
+            type: 'category',
+            gridIndex: 4,
             data: dates,
             scale: true,
             boundaryGap: true,
@@ -555,6 +608,21 @@
             axisLine: {show: true},
             axisTick: {show: true},
             splitLine: {show: true}
+        }, {
+            scale: true,
+            gridIndex: 4,
+            splitNumber: 2,
+            axisLabel: {
+                inside: true,
+                show: true,
+                // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
+                formatter: function (value, index) {
+                    return bkm(value);
+                }
+            },
+            axisLine: {show: true},
+            axisTick: {show: true},
+            splitLine: {show: true}
         }],
         grid: [{
             top: 110,
@@ -568,6 +636,9 @@
         }, {
             height: 100,
             top: 720
+        }, {
+            height: 100,
+            top: 840
         }],
 
         graphic: [{
@@ -601,6 +672,13 @@
                 xAxisIndex: 2,
                 yAxisIndex: 2,
                 data: diff
+            }, {
+                name: 'upDN',
+                type: "line",
+                smooth: true,
+                xAxisIndex: 4,
+                yAxisIndex: 4,
+                data: upDN
             },
             {
                 name: 'CQ_buy',
@@ -755,6 +833,7 @@
         bollUP = [];
         bollMID = [];
         bollLOW = [];
+        upDN = [];
         updateOption();
     }
     const updateList = (obj) => {
@@ -881,6 +960,10 @@
         bollUP = up;
         bollMID = mid;
         bollLOW = low;
+        upDN = [];
+        for (let i = 0; i < bollUP.length; i++) {
+            upDN.push(up[i] - low[i]);
+        }
 
         const {diffs} = macd(price);
         diff = diffs;
@@ -942,6 +1025,19 @@
                 splitNumber: 20,
                 min: 'dataMin',
                 max: 'dataMax',
+            }, {
+                type: 'category',
+                gridIndex: 4,
+                data: dates,
+                scale: true,
+                boundaryGap: true,
+                splitLine: {show: true},
+                axisLabel: {show: true},
+                axisTick: {show: true},
+                axisLine: {lineStyle: {color: SAFE_COLOR.grey}},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax',
             }],
             series: [
                 {
@@ -951,6 +1047,13 @@
                     xAxisIndex: 2,
                     yAxisIndex: 2,
                     data: diff
+                }, {
+                    name: 'upDN',
+                    type: "line",
+                    smooth: true,
+                    xAxisIndex: 4,
+                    yAxisIndex: 4,
+                    data: upDN
                 },
                 {
                     name: 'CQ_buy',
