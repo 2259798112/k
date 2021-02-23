@@ -334,6 +334,8 @@
     let bollMID = [];
     let bollLOW = [];
     let upDN = [];
+    let b30up = 0;
+    let b30dn = 0;
 
     const DATA_TYPE = {
         r: "r",
@@ -353,6 +355,7 @@
     const HOST = "duokong.info";
     const initWS = () => {
         const wsUrl = "ws://" + HOST + ":10001";//localhost 根据实际情况替换成 响应的ip 或者域名
+        // const wsUrl = "ws://" + "localhost" + ":10001";//localhost 根据实际情况替换成 响应的ip 或者域名
         let ws = new ReconnectingWebSocket(wsUrl);
 
         ws.onopen = function (evt) {
@@ -449,7 +452,7 @@
                 return html
 
             },
-            position: [0, -20],
+            // position: [0, -20],
         },
         axisPointer: {
             link: [{
@@ -788,7 +791,7 @@
                     color: SAFE_COLOR.blue
                 }
             }*/
-            ]
+        ]
     };
     myChart.setOption(option);
     initWS();
@@ -843,7 +846,7 @@
 
         if (DATA_TYPE.r === obj.dataType) {
             let index = dates.length - 1;
-            const {buy, sell, nb, ns, qpBuy, qpSell, dataK: kline} = obj
+            const {buy, sell, nb, ns, qpBuy, qpSell, dataK: kline, bollUP, bollDN} = obj
             volumesBuy[index] = buy;
             volumesSell[index] = sell;
             volAll[index] = buy + sell;
@@ -852,6 +855,9 @@
             volNS[index] = ns;
             volumesCqBuy[index] = qpBuy;
             volumesCqSell[index] = qpSell;
+
+            b30up = bollUP;
+            b30dn = bollDN;
 
             const {id, open, close, low, high, amount, vol, trade_turnover, count} = kline[0];
             let k = [];
@@ -1119,13 +1125,28 @@
                     },
                     markLine: {
                         symbol: "none",
-                        lineStyle: {
-                            color: SAFE_COLOR.red
-                        },
+
                         data: [
                             {
                                 name: '最新价',
-                                yAxis: lastClose
+                                yAxis: lastClose,
+                                lineStyle: {
+                                    color: SAFE_COLOR.yellow
+                                }
+                            },
+                            {
+                                name: 'b30up',
+                                yAxis: b30up,
+                                lineStyle: {
+                                    color: SAFE_COLOR.red
+                                }
+                            },
+                            {
+                                name: 'b30dn',
+                                yAxis: b30dn,
+                                lineStyle: {
+                                    color: SAFE_COLOR.green
+                                }
                             }
                         ]
                     },
