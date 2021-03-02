@@ -1108,10 +1108,14 @@
             }],
             yAxis: [{
                 scale: false,//min max 存在是 scale 无效
-                max: 'dataMax',
+                // max: 'dataMax',
                 // min: 'dataMin',
                 min: function (value) {
                     return value.min - (value.min % 50);
+                },
+
+                max: function (value) {
+                    return value.max +(50 - value.max % 50) ;
                 },
                 // interval: 100,
                 // splitNumber: 1,
