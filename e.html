@@ -1289,28 +1289,31 @@
                     markLine: {
                         symbol: "none",
                         //padding: [3, 4, 5, 6]：表示 [上, 右, 下, 左] 的边距。
-                        label: {show: true},
+
                         data: [
                             {
                                 name: '最新价',
                                 yAxis: lastClose,
                                 lineStyle: {
                                     color: SAFE_COLOR.yellow
-                                }
+                                },
+                                label: {show: true}
                             },
                             {
                                 name: 'b30up',
                                 yAxis: b30up,
                                 lineStyle: {
                                     color: SAFE_COLOR.red
-                                }
+                                },
+                                label: {show: false}
                             },
                             {
                                 name: 'b30dn',
                                 yAxis: b30dn,
                                 lineStyle: {
                                     color: SAFE_COLOR.green
-                                }
+                                },
+                                label: {show: false}
                             }
                         ]
                     },
