@@ -562,7 +562,7 @@
             splitLine: {show: true},
             axisTick: {show: true},
             axisLabel: {
-                // inside: true,
+                inside: true,
                 formatter: function (value, index) {
                     return Math.round(value)
                 }
@@ -637,26 +637,24 @@
             splitLine: {show: true}
         },{
             type: 'category',
-            data: vrPrice
+            data: vrPrice,
+            axisLabel: {
+                inside: true,
+            },
         }],
         grid: [{
-            left: "10%",
             top: 40,
             height: 300
         }, {
-            left: "10%",
             height: 100,
             top: 370
         }, {
-            left: "10%",
             height: 100,
             top: 500
         }, {
-            left: "10%",
             height: 100,
             top: 630
         }, {
-            left: "10%",
             height: 100,
             top: 760
         }],
@@ -1121,7 +1119,7 @@
                 splitLine: {show: true},
                 axisTick: {show: true},
                 axisLabel: {
-                    // inside: true,
+                    inside: true,
                     formatter: function (value, index) {
                         return Math.round(value)
                     }
@@ -1196,7 +1194,10 @@
                 splitLine: {show: true}
             },{
                 type: 'category',
-                data: vrPrice
+                data: vrPrice,
+                axisLabel: {
+                    inside: true,
+                },
             }],
 
             series: [
