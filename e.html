@@ -324,6 +324,10 @@
     let volumesCqBuy = [];
     let volumesCqSell = [];
 
+    let vrPrice = [];
+    let vrBuy = [];
+    let vrSell = [];
+
     // let dataMA5 = [];//calculateMA(5, dataK);
     // let dataMA10 = [];//calculateMA(10, dataK);
     // let dataMA20 = [];//calculateMA(20, dataK);
@@ -396,10 +400,11 @@
     /*初始化数据*/
     option = {
         // animation: true,
-        // legend: {
-        //     top: 30,
-        //     data: ['日K', 'up', 'mid', 'low']
-        // },
+        legend: {
+            orient: "vertical",
+            left: 20,
+            data: ['vrBuy','vrSell']
+        },
 
         tooltip: {
             trigger: 'axis',
@@ -541,18 +546,23 @@
             splitNumber: 20,
             min: 'dataMin',
             max: 'dataMax',
+        },{
+            type: 'value'
         }],
         yAxis: [{
             scale: false,//min max 存在是 scale 无效
             max: 'dataMax',
-            min: 'dataMin',
+            // min: 'dataMin',
+            min: function (value) {
+                return value.min - (value.min % 50);
+            },
             interval: 100,
             splitNumber: 1,
             axisLine: {lineStyle: {color: SAFE_COLOR.grey}},
             splitLine: {show: true},
             axisTick: {show: true},
             axisLabel: {
-                inside: true,
+                // inside: true,
                 formatter: function (value, index) {
                     return Math.round(value)
                 }
@@ -563,7 +573,8 @@
             minorTick: {
                 show: true,
                 splitNumber: 2,
-            }
+            },
+            position: "right"
         }, {
             scale: true,
             gridIndex: 1,
@@ -624,6 +635,9 @@
             axisLine: {show: true},
             axisTick: {show: true},
             splitLine: {show: true}
+        },{
+            type: 'category',
+            data: vrPrice
         }],
         grid: [{
             top: 40,
@@ -756,6 +770,40 @@
                     ]
                 },
             },
+            {
+                name: 'vrBuy',
+                type: 'bar',
+                stack: 'vr',
+                xAxisIndex: 5,
+                yAxisIndex: 5,
+                label: {
+                    show: false
+                },
+                itemStyle: {
+                    color: SAFE_COLOR.yellow
+                },
+                emphasis: {
+                    focus: 'series'
+                },
+                data: vrBuy
+            },
+            {
+                name: 'vrSell',
+                type: 'bar',
+                stack: 'vr',
+                xAxisIndex: 5,
+                yAxisIndex: 5,
+                label: {
+                    show: false
+                },
+                itemStyle: {
+                    color: SAFE_COLOR.blue
+                },
+                emphasis: {
+                    focus: 'series'
+                },
+                data: vrSell
+            }
             /*
             {
                 name: 'up',
@@ -828,6 +876,10 @@
 
         volNB = [];
         volNS = [];
+
+        vrPrice = [];
+        vrBuy = [];
+        vrSell = [];
 
         volumesCqBuy = [];
         volumesCqSell = [];
@@ -916,7 +968,7 @@
          * 初始化数据
          */
         if (DATA_TYPE.init === obj.dataType) {
-            const {next, qpSell, buy, sell, nb, ns, qpBuy, dataK: kline, dates: d} = obj;
+            const {next, qpSell, buy, sell, nb, ns, qpBuy, dataK: kline, dates: d, vrPrice: vPrice, vrBuy: vBuy, vrSell: vSell} = obj;
             dates = d;
             volumesBuy = buy;
             volumesSell = sell;
@@ -928,6 +980,10 @@
             volNS = ns;
             volumesCqBuy = qpBuy;
             volumesCqSell = qpSell;
+
+            vrPrice = vPrice;
+            vrBuy = vBuy;
+            vrSell = vSell;
 
             for (let i = 0; i < kline.length; i++) {
                 const {fclose: close, fhigh: high, flow: low, fopen: open} = kline[i];
@@ -1044,7 +1100,100 @@
                 splitNumber: 20,
                 min: 'dataMin',
                 max: 'dataMax',
+            },{
+                type: 'value'
             }],
+            yAxis: [{
+                scale: false,//min max 存在是 scale 无效
+                max: 'dataMax',
+                // min: 'dataMin',
+                min: function (value) {
+                    return value.min - (value.min % 50);
+                },
+                // interval: 100,
+                // splitNumber: 1,
+                axisLine: {lineStyle: {color: SAFE_COLOR.grey}},
+                splitLine: {show: true},
+                axisTick: {show: true},
+                axisLabel: {
+                    // inside: true,
+                    formatter: function (value, index) {
+                        return Math.round(value)
+                    }
+                },
+                minorSplitLine: {
+                    show: false
+                },
+                minorTick: {
+                    show: false,
+                    splitNumber: 2,
+                },
+                position: "right"
+            }, {
+                scale: true,
+                gridIndex: 1,
+                splitNumber: 2,
+                axisLabel: {
+                    inside: true,
+                    show: true,
+                    // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
+                    formatter: function (value, index) {
+                        return bkm(value);
+                    }
+                },
+                axisLine: {show: true},
+                axisTick: {show: true},
+                splitLine: {show: true},
+            }, {
+                scale: true,
+                gridIndex: 2,
+                splitNumber: 2,
+                axisLabel: {
+                    inside: true,
+                    show: true,
+                    // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
+                    formatter: function (value, index) {
+                        return Math.round(value)
+                    }
+                },
+                axisLine: {show: true},
+                axisTick: {show: true},
+                splitLine: {show: true}
+            }, {
+                scale: true,
+                gridIndex: 3,
+                splitNumber: 2,
+                axisLabel: {
+                    inside: true,
+                    show: true,
+                    // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
+                    formatter: function (value, index) {
+                        return bkm(value);
+                    }
+                },
+                axisLine: {show: true},
+                axisTick: {show: true},
+                splitLine: {show: true}
+            }, {
+                scale: true,
+                gridIndex: 4,
+                splitNumber: 2,
+                axisLabel: {
+                    inside: true,
+                    show: true,
+                    // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
+                    formatter: function (value, index) {
+                        return bkm(value);
+                    }
+                },
+                axisLine: {show: true},
+                axisTick: {show: true},
+                splitLine: {show: true}
+            },{
+                type: 'category',
+                data: vrPrice
+            }],
+
             series: [
                 {
                     name: 'macd',
@@ -1125,7 +1274,7 @@
                     },
                     markLine: {
                         symbol: "none",
-
+                        label:{show:false},
                         data: [
                             {
                                 name: '最新价',
@@ -1151,6 +1300,42 @@
                         ]
                     },
                 },
+                {
+                    name: 'vrBuy',
+                    type: 'bar',
+                    stack: 'vr',
+                    xAxisIndex: 5,
+                    yAxisIndex: 5,
+                    label: {
+                        show: false
+                    },
+                    itemStyle: {
+                        color: SAFE_COLOR.yellow,
+                        opacity: 0.3
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: vrBuy
+                },
+                {
+                    name: 'vrSell',
+                    type: 'bar',
+                    stack: 'vr',
+                    xAxisIndex: 5,
+                    yAxisIndex: 5,
+                    label: {
+                        show: false
+                    },
+                    itemStyle: {
+                        color: SAFE_COLOR.blue,
+                        opacity: 0.3
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: vrSell
+                }
                 /*
                 {
                     name: 'up',
