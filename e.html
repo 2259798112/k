@@ -403,7 +403,7 @@
         legend: {
             orient: "vertical",
             left: 20,
-            data: ['vrBuy','vrSell']
+            data: ['vrBuy', 'vrSell']
         },
 
         tooltip: {
@@ -466,7 +466,7 @@
         },
         dataZoom: [{
             type: 'slider',
-            xAxisIndex: [0, 1, 2, 3, 4,5],
+            xAxisIndex: [0, 1, 2, 3, 4, 5],
             realtime: true,
             // start: 50,
             // end: 100,
@@ -476,7 +476,7 @@
             handleSize: '100%'
         }, {
             type: 'inside',
-            xAxisIndex: [0, 1, 2, 3, 4,5],
+            xAxisIndex: [0, 1, 2, 3, 4, 5],
             // top: 30,
             height: 20
         }],
@@ -546,7 +546,7 @@
             splitNumber: 20,
             min: 'dataMin',
             max: 'dataMax',
-        },{
+        }, {
             type: 'value'
         }],
         yAxis: [{
@@ -563,6 +563,7 @@
             axisTick: {show: true},
             axisLabel: {
                 inside: true,
+                show: false,
                 formatter: function (value, index) {
                     return Math.round(value)
                 }
@@ -635,7 +636,7 @@
             axisLine: {show: true},
             axisTick: {show: true},
             splitLine: {show: true}
-        },{
+        }, {
             type: 'category',
             data: vrPrice,
             axisLabel: {
@@ -1103,7 +1104,7 @@
                 splitNumber: 20,
                 min: 'dataMin',
                 max: 'dataMax',
-            },{
+            }, {
                 type: 'value'
             }],
             yAxis: [{
@@ -1115,7 +1116,7 @@
                 },
 
                 max: function (value) {
-                    return value.max +(50 - value.max % 50) ;
+                    return value.max + (50 - value.max % 50);
                 },
                 // interval: 100,
                 // splitNumber: 1,
@@ -1123,6 +1124,7 @@
                 splitLine: {show: true},
                 axisTick: {show: true},
                 axisLabel: {
+                    show: false,
                     inside: true,
                     formatter: function (value, index) {
                         return Math.round(value)
@@ -1196,7 +1198,7 @@
                 axisLine: {show: true},
                 axisTick: {show: true},
                 splitLine: {show: true}
-            },{
+            }, {
                 type: 'category',
                 data: vrPrice,
                 axisLabel: {
@@ -1284,7 +1286,7 @@
                     },
                     markLine: {
                         symbol: "none",
-                        label:{show:false},
+                        label: {inside: true, show: true},
                         data: [
                             {
                                 name: '最新价',
