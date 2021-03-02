@@ -400,11 +400,11 @@
     /*初始化数据*/
     option = {
         // animation: true,
-        legend: {
-            orient: "vertical",
-            left: 20,
-            data: ['vrBuy', 'vrSell']
-        },
+        // legend: {
+        //     orient: "vertical",
+        //     left: 20,
+        //     data: ['vrBuy', 'vrSell']
+        // },
 
         tooltip: {
             trigger: 'axis',
@@ -1288,7 +1288,8 @@
                     },
                     markLine: {
                         symbol: "none",
-                        label: {inside: true, show: true},
+                        //padding: [3, 4, 5, 6]：表示 [上, 右, 下, 左] 的边距。
+                        label: {show: true},
                         data: [
                             {
                                 name: '最新价',
