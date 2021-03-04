@@ -99,11 +99,12 @@
                 <div class="field is-grouped">
                     <div class="control">
                         <button class="button is-link" onclick="setPeriod()">确定</button>
+                        <button class="button" onclick="deleteTips()">移除</button>
                     </div>
                 </div>
             </div>
             <HR>
-            <div class="" id="tips">
+            <div id="tips">
                 <h1 class="title">突破(惯性加速)</h1>
                 <div class="control">
                     <P class="tag is-danger"> 收敛 </P>
@@ -224,6 +225,10 @@
 
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 <script type="text/javascript">
+    const deleteTips = () => {
+        qs('#tips').remove();
+    }
+
     // 基于准备好的dom，初始化echarts实例
     let myChart = echarts.init(document.getElementById('main'));
     let labelFont = 'bold 12px Sans-serif';
@@ -327,6 +332,8 @@
     let vrPrice = [];
     let vrBuy = [];
     let vrSell = [];
+    let vrAll = [];
+    let vrDif = [];
 
     // let dataMA5 = [];//calculateMA(5, dataK);
     // let dataMA10 = [];//calculateMA(10, dataK);
@@ -885,6 +892,7 @@
         vrPrice = [];
         vrBuy = [];
         vrSell = [];
+        vrAll = [];
 
         volumesCqBuy = [];
         volumesCqSell = [];
@@ -989,6 +997,19 @@
             vrPrice = vPrice;
             vrBuy = vBuy;
             vrSell = vSell;
+            //计算差值
+            for (let i = 0; i < vPrice.length; i++) {
+                vrDif.push(Math.abs(vBuy[i] - vSell[i]));
+                vrAll.push(vBuy[i] + vSell[i] - vrDif[i]);
+
+                if (vBuy[i] > vrSell[i]) {
+                    vBuy[i] = vrDif[i];
+                    vSell[i] = 0;
+                } else {
+                    vSell[i] = vrDif[i];
+                    vBuy[i] = 0;
+                }
+            }
 
             for (let i = 0; i < kline.length; i++) {
                 const {fclose: close, fhigh: high, flow: low, fopen: open} = kline[i];
@@ -1328,8 +1349,8 @@
                         show: false
                     },
                     itemStyle: {
-                        color: SAFE_COLOR.yellow,
-                        opacity: 0.3
+                        color: SAFE_COLOR.red,
+                        // opacity: 0.5
                     },
                     emphasis: {
                         focus: 'series'
@@ -1346,13 +1367,31 @@
                         show: false
                     },
                     itemStyle: {
-                        color: SAFE_COLOR.blue,
-                        opacity: 0.3
+                        color: SAFE_COLOR.green,
+                        // opacity: 0.5
                     },
                     emphasis: {
                         focus: 'series'
                     },
                     data: vrSell
+                },
+                {
+                    name: 'vrAll',
+                    type: 'bar',
+                    stack: 'vr',
+                    xAxisIndex: 5,
+                    yAxisIndex: 5,
+                    label: {
+                        show: false
+                    },
+                    itemStyle: {
+                        color: SAFE_COLOR.grey,
+                        opacity: 0.5
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: vrAll
                 }
                 /*
                 {
