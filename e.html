@@ -951,13 +951,14 @@
             k.push(high);
             dataK[index] = k;
             priceClose[index] = close;
-
-            let d = close - lastClose;
-            if (d > 0) {
-                qs('title').innerText = "🔥 【" + Math.round(d) + "】" + close;
-            } else {
-                qs('title').innerText = "❄️ 【" + Math.round(d) + "】" + close;
-            }
+            //
+            // let d = close - lastClose;
+            // if (d > 0) {
+            //     qs('title').innerText = "🔥 【" + Math.round(d) + "】" + close;
+            // } else {
+            //     qs('title').innerText = "❄️ 【" + Math.round(d) + "】" + close;
+            // }
+            qs('title').innerText = "["+Math.round(close)+"]"
             lastClose = close;
 
             let mp = qs("#iOpenPrice").value;
@@ -973,10 +974,15 @@
                 let av = lv * (mH - mp) / mp;
                 if (av > 0 && av <= 0.05) {
                     let p = mp * (1 + fee);
-                    qs("#iMpBuy").innerText = Math.round(p) + "/" + Math.round(av * 1000) /10;
+                    let t = Math.round(p) + "/" + Math.round(av * 1000) /10;;
+                    qs("#iMpBuy").innerText = t;
+                    qs('title').innerText = "🔥" + t;
+
                 } else if (av > 0.05) {
                     let p = mp * ((1 + (av / 2) / lv));
-                    qs("#iMpBuy").innerText = Math.round(p) + "/" + Math.round(av * 1000) /10;
+                    let t = Math.round(p) + "/" + Math.round(av * 1000) /10;;
+                    qs("#iMpBuy").innerText = t;
+                    qs('title').innerText = "🔥" + t;
                 } else {
                     qs("#iMpBuy").innerText = Math.round(0);
                 }
@@ -991,11 +997,14 @@
                 av = lv * (mp - mL) / mp;
                 if (av > 0 && av <= 0.05) {
                     let p = mp * (1 - fee);
-                    qs("#iMpSell").innerText = Math.round(p) + "/" + Math.round(av * 1000) /10;
-                    ;
+                    let t = Math.round(p) + "/" + Math.round(av * 1000) /10;
+                    qs("#iMpSell").innerText = t;
+                    qs('title').innerText += "❄️" + t;
                 } else if (av > 0.05) {
                     let p = mp * ((1 - (av / 2) / lv));
-                    qs("#iMpSell").innerText = Math.round(p) + "/" + Math.round(av * 1000) /10;
+                    let t = Math.round(p) + "/" + Math.round(av * 1000) /10;
+                    qs("#iMpSell").innerText = t;
+                    qs('title').innerText += "❄️" + t;
                 } else {
                     qs("#iMpSell").innerText = Math.round(0);
                 }
