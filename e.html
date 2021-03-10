@@ -976,13 +976,13 @@
                     let p = mp * (1 + fee);
                     let t = Math.round(p) + "/" + Math.round(av * 1000) /10;;
                     qs("#iMpBuy").innerText = t;
-                    qs('title').innerText = "🔥" + t;
+                    qs('title').innerText += "🔥" + t;
 
                 } else if (av > 0.05) {
                     let p = mp * ((1 + (av / 2) / lv));
                     let t = Math.round(p) + "/" + Math.round(av * 1000) /10;;
                     qs("#iMpBuy").innerText = t;
-                    qs('title').innerText = "🔥" + t;
+                    qs('title').innerText += "🔥" + t;
                 } else {
                     qs("#iMpBuy").innerText = Math.round(0);
                 }
