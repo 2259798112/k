@@ -72,7 +72,7 @@
 
                     <div class="control">
                         <label class="label">数量</label>
-                        <label class="radio">
+                        <label class="radio" id="iKSize">
                             <input type="radio" name="kSize" value="20">
                             20
                         </label>
@@ -100,6 +100,7 @@
                     <div class="control">
                         <button class="button is-link" onclick="setPeriod()">确定</button>
                         <button class="button" onclick="deleteTips()">移除</button>
+                        <button class="button is-warning" onclick="setLineSize()">数量</button>
                     </div>
                 </div>
             </div>
@@ -260,6 +261,16 @@
     // 基于准备好的dom，初始化echarts实例
     let myChart = echarts.init(document.getElementById('main'));
     let labelFont = 'bold 12px Sans-serif';
+
+    function setLineSize() {
+        let item = qs('#iKSize');
+        let size = parseInt(qs('#iHistoryServer').value);
+        if (size > 0) {
+            item.firstElementChild.value = size;
+            item.firstElementChild.checked = true;
+            item.childNodes[2].nodeValue = size;
+        }
+    }
 
     function calculateMA(dayCount, data) {
         let result = [];
