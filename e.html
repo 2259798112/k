@@ -35,12 +35,11 @@
     <div id="notification"></div>
 
     <div class="columns">
-        <div class="column is-2-desktop">
+        <div class="column is-3-desktop">
             <div class="" id="left">
                 <div class="field">
                     <div class="control">
                         <label id="iTime"> </label>
-                        <!--                        <progress class="progress is-success" value="0" max="100">时间进度</progress>-->
                     </div>
 
                     <div class="control">
@@ -105,19 +104,75 @@
                 </div>
             </div>
             <HR>
-            <div id="m">
-                <div class="field">
-                    <div class="control">
-                        <input class="input" type="text" placeholder="" id="iOpenPrice">
+            <div id="iStop">
+                <div class="field is-horizontal">
+                    <div class="field-body">
+                        <div class="field has-addons">
+                            <p class="control">
+                                <input class="input is-danger " type="text" id="iUp1">
+                            </p>
+                            <p class="control">
+                                <input class="input is-danger " type="text" id="iUp1Pct">
+                            </p>
+                        </div>
+                        <div class="field has-addons">
+                            <p class="control">
+                                <input class="input is-success " type="text" id="iDn1">
+                            </p>
+                            <p class="control">
+                                <input class="input  is-success " type="text" id="iDn1Pct">
+                            </p>
+                        </div>
+
                     </div>
+
                 </div>
-                <div class="field is-grouped">
-                    <div class="control">
-                        <button class="button is-danger" id="iMpBuy">↑</button>
-                        <button class="button is-success" id="iMpSell">↓</button>
+                <div class="field is-horizontal">
+                    <div class="field-body">
+                        <div class="field has-addons">
+                            <p class="control">
+                                <input class="input is-danger " type="text" id="iUp2">
+                            </p>
+                            <p class="control">
+                                <input class="input is-danger " type="text" id="iUp2Pct">
+                            </p>
+                        </div>
+                        <div class="field has-addons">
+                            <p class="control">
+                                <input class="input is-success " type="text" id="iDn2">
+                            </p>
+                            <p class="control">
+                                <input class="input  is-success " type="text" id="iDn2Pct">
+                            </p>
+                        </div>
+
                     </div>
+
+                </div>
+                <div class="field is-horizontal">
+                    <div class="field-body">
+                        <div class="field has-addons">
+                            <p class="control">
+                                <input class="input is-danger " type="text" id="iUp3">
+                            </p>
+                            <p class="control">
+                                <input class="input is-danger " type="text" id="iUp3Pct">
+                            </p>
+                        </div>
+                        <div class="field has-addons">
+                            <p class="control">
+                                <input class="input is-success " type="text" id="iDn3">
+                            </p>
+                            <p class="control">
+                                <input class="input  is-success " type="text" id="iDn3Pct">
+                            </p>
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
+            <HR>
             <HR>
             <div id="tips">
                 <h1 class="title">突破(惯性加速)</h1>
@@ -163,86 +218,19 @@
                     <P class="tag is-danger"> 止损（初K高底点） </P>
                 </div>
                 <div class="control">
-                    <P class="tag"> 入场大于 3：1  </P>
+                    <P class="tag"> 入场大于 3：1 </P>
                 </div>
 
             </div>
+
         </div>
         <div class="column">
             <div id="main" style="height:900px;"></div>
-            <progress class="progress is-success" value="0" max="100">时间进度</progress>
-
+            <!--            <progress class="progress is-success" value="0" max="100">时间进度</progress>-->
         </div>
+
 
     </div>
-
-
-    <!--    <div class="container" id="content">-->
-    <!--
-        <div class="container">
-            <div id="modal" class="modal is-active">
-                <div class="modal-background"></div>
-                <div class="modal-content">
-                    <div class="box">
-                        <article class="media">
-                            <div class="media-content">
-                                <div class="control">
-                                    周期选择：
-                                    <label class="radio">
-                                        <input type="radio" name="period" value="1min" checked>
-                                        1min
-                                    </label>
-                                    <label class="radio">
-                                        <input type="radio" name="period" value="5min">
-                                        5min
-                                    </label>
-                                    <label class="radio">
-                                        <input type="radio" name="period" value="30min">
-                                        30min
-                                    </label>
-                                </div>
-
-                                <div class="control">
-                                    K线数量：
-                                    <label class="radio">
-                                        <input type="radio" name="kSize" value="20">
-                                        20
-                                    </label>
-                                    <label class="radio">
-                                        <input type="radio" name="kSize" value="50" checked>
-                                        50
-                                    </label>
-                                    <label class="radio">
-                                        <input type="radio" name="kSize" value="100">
-                                        100
-                                    </label>
-                                    <label class="radio">
-                                        <input type="radio" name="kSize" value="240">
-                                        240
-                                    </label>
-                                    <label class="radio">
-                                        <input type="radio" name="kSize" value="480">
-                                        480
-                                    </label>
-                                    <label class="radio">
-                                        <input type="radio" name="kSize" value="720">
-                                        720
-                                    </label>
-                                    <label class="radio">
-                                        <input type="radio" name="kSize" value="1440">
-                                        1440
-                                    </label>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-                <button class="modal-close is-large" aria-label="close" onclick="setPeriod()"></button>
-            </div>
-
-        </div>
-    -->
-
 
 </section>
 
@@ -856,41 +844,6 @@
                 },
                 data: vrSell
             }
-            /*
-            {
-                name: 'up',
-                type: 'line',
-                // data: dataMA5,
-                data: bollUP,
-                smooth: true,
-                showSymbol: false,
-                lineStyle: {
-                    width: 1,
-                    color: SAFE_COLOR.yellow
-                }
-            }, {
-                name: 'mid',
-                type: 'line',
-                // data: dataMA10,
-                data: bollMID,
-                smooth: true,
-                showSymbol: false,
-                lineStyle: {
-                    width: 1,
-                    color: SAFE_COLOR.black
-                }
-            }, {
-                name: 'low',
-                type: 'line',
-                // data: dataMA20,
-                data: bollLOW,
-                smooth: true,
-                showSymbol: false,
-                lineStyle: {
-                    width: 1,
-                    color: SAFE_COLOR.blue
-                }
-            }*/
         ]
     };
     myChart.setOption(option);
@@ -898,7 +851,7 @@
     setInterval(() => {
         let date = new Date();
         let seconds = date.getSeconds();
-        qs('.progress').value = seconds * 100 / 60;
+        // qs('.progress').value = seconds * 100 / 60;
         qs("#iTime").innerText = date.toLocaleString();
     }, 500);
 
@@ -979,59 +932,14 @@
             // } else {
             //     qs('title').innerText = "❄️ 【" + Math.round(d) + "】" + close;
             // }
-            qs('title').innerText = "["+Math.round(close)+"]"
+            qs('title').innerText = "[" + Math.round(close) + "]"
             lastClose = close;
-
-            let mp = qs("#iOpenPrice").value;
-            let lv = 20;
-            let fee = 0.001;
-            if (mp !== undefined && mp > 0) {
-                if (mH === 0) {
-                    mH = close;
-                } else {
-                    mH = Math.max(mH, close);
-                }
-
-                let av = lv * (mH - mp) / mp;
-                if (av > 0 && av <= 0.05) {
-                    let p = mp * (1 + fee);
-                    let t = Math.round(p) + "/" + Math.round(av * 1000) /10;;
-                    qs("#iMpBuy").innerText = t;
-                    qs('title').innerText += "🔥" + t;
-
-                } else if (av > 0.05) {
-                    let p = mp * ((1 + (av / 2) / lv));
-                    let t = Math.round(p) + "/" + Math.round(av * 1000) /10;;
-                    qs("#iMpBuy").innerText = t;
-                    qs('title').innerText += "🔥" + t;
-                } else {
-                    qs("#iMpBuy").innerText = Math.round(0);
-                }
-
-
-                if (mL === 0) {
-                    mL = close;
-                } else {
-                    mL = Math.min(mL, close);
-                }
-
-                av = lv * (mp - mL) / mp;
-                if (av > 0 && av <= 0.05) {
-                    let p = mp * (1 - fee);
-                    let t = Math.round(p) + "/" + Math.round(av * 1000) /10;
-                    qs("#iMpSell").innerText = t;
-                    qs('title').innerText += "❄️" + t;
-                } else if (av > 0.05) {
-                    let p = mp * ((1 - (av / 2) / lv));
-                    let t = Math.round(p) + "/" + Math.round(av * 1000) /10;
-                    qs("#iMpSell").innerText = t;
-                    qs('title').innerText += "❄️" + t;
-                } else {
-                    qs("#iMpSell").innerText = Math.round(0);
-                }
-
-
-            }
+            calcStop(close, "#iUp1", "#iUp1Pct", 1);
+            calcStop(close, "#iUp2", "#iUp2Pct", 1);
+            calcStop(close, "#iUp3", "#iUp3Pct", 1);
+            calcStop(close, "#iDn1", "#iDn1Pct", -1);
+            calcStop(close, "#iDn2", "#iDn2Pct", -1);
+            calcStop(close, "#iDn3", "#iDn3Pct", -1);
         }
         /**
          * 更新已完成K
@@ -1526,6 +1434,17 @@
         myChart.setOption(opt);
     };
 
+
+    function calcStop(price, id1, pct, side) {
+        let mp = qs(id1).value;
+        if (mp !== undefined && mp > 0 && price > 0) {
+            if (side > 0) { //up
+                qs(pct).value = Math.round(100 * 20 * (mp - price) / price);
+            } else {
+                qs(pct).value = Math.round(100 * 20 * (price - mp) / price);
+            }
+        }
+    }
 </script>
 </body>
 
